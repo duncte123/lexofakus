@@ -1,0 +1,2284 @@
+<script id="tumblelog_popover_template"
+        type="text/template"><% var is_poptica = (typeof is_poptica === 'boolean') ? is_poptica : false; %>
+<div class="popover popover_gradient tumblelog_popover" data-context-path="AYwEbVwAAAj96g">
+    <div class="popover_content_wrapper">
+        <div class="popover_inner"></div>
+    </div>
+</div></script>
+<script id="recommended_blogs_template" type="text/template"><h4 class="tumblelog_info_heading"><span
+        class="followed_blog"><%= followed_blog %></span> reblogs stuff from:
+</h4></script>
+<script id="highlighted_posts_template" type="text/template"><%
+var color = (typeof loader_color !== 'undefined') ? loader_color : '#D9D9D9';
+%>
+<div class="Knight-Rider-loader centered animate">
+    <div class="Knight-Rider-bar" style="background-color:<%= color %>"></div>
+    <div class="Knight-Rider-bar" style="background-color:<%= color %>"></div>
+    <div class="Knight-Rider-bar" style="background-color:<%= color %>"></div>
+</div></script>
+<script id="tumblelog_popover_info"
+        type="text/template"><% if(typeof url === 'string') { %><% if(typeof avatar_url === 'string') { %><a
+        class="avatar" href="<%= url %>" target="_blank" style="background-image:url(<%= avatar_url %>)"></a><% } %>
+<div class="name"><% if(typeof title === 'string' && title !== '') { %><h3><a href="<%= url %>" target="_blank"><%= name
+    %></a></h3><h4><%= title %></h4><% } else { %><h3 class="solo"><a href="<%= url %>" target="_blank"><%= name %></a>
+</h3><% } %>
+</div><% if(typeof is_you === 'undefined' || is_you !== true) { %>
+<div class="tumblelog_nav"><% if (show_menu === true) { %>
+    <div class="tumblelog_menu"><a class="tumblelog_menu_btn" href="#"></a>
+        <div class="tumblelog_menu_popover">
+            <ul><% if(typeof asks === 'boolean' && asks === true) { %>
+                <li><a class="ask" href="<%= url %>/ask" data-anonymous-ask="<%= anonymous_asks %>"
+                       data-tumblelog-name="<%= name %>" target="_blank">Ask a question</a></li>
+                <% } %>
+                <li><a class="fan_mail" href="/send/<%= name %>">Send fan mail</a></li>
+                <li><a href="<%= url %>/archive" target="_blank">Archive</a></li>
+                <% if(typeof likes === 'boolean' && likes === true) { %>
+                <li><a href="/liked/by/<%= name %>">Likes</a></li>
+                <% } %><% if(typeof ignoring === 'boolean' && ignoring === false) { %>
+                <li><a class="ignore" href="#">Ignore</a></li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+    <% } %><% if(typeof ignoring === 'undefined' || ignoring !== true) { %><% if(typeof following === 'boolean' &&
+    following === true) { %>
+    <div class="follow_nav is_following"><% } else { %>
+        <div class="follow_nav"><% } %><a class="unfollow chrome" href="/follow/<%= name %>">Unfollow</a><a
+                class="follow chrome blue" href="/follow/<%= name %>">Follow</a></div>
+        <% } %>
+    </div>
+    <% } %><% } %></script>
+<script id="poptica_template" type="text/template"><%
+var has_bg_img = (global_theme_params.header_image_focused && global_theme_params.show_header_image);
+var has_title = (title && global_theme_params.show_title);
+var has_description = (description_sanitized && global_theme_params.show_description);
+
+var header_class = (global_theme_params.header_stretch) ? '' : ' no_stretch_header';
+header_class += (has_bg_img) ? '' : ' no_header_image';
+header_class += (has_bg_img && !has_title && !has_description) ? ' header_image_only' : '';
+%>
+<div class="poptica_header_wrapper <%= header_class %>" style="color:<%= global_theme_params.title_color %>"><%
+    if(has_bg_img) { %>
+    <div class="header_image_wrapper">
+        <div class="header_image" style="background-image:url(<%- global_theme_params.header_image_focused %>)"><img
+                src="<%- global_theme_params.header_image_focused %>" alt=""/></div>
+    </div>
+    <% } %>
+</div></script>
+<script id="tumblelog_header_inline_styles" type="text/template">
+    <style id="indash_blog_styles"><%
+    var link_color = String(global_theme_params.link_color).toUpperCase();
+    var link_border_color = (link_color === '#FFF' || link_color === '#FFFFFF') ? '#F5F5F5' : link_color;
+    var link_text_color = (typeof link_font_color !== 'undefined') ? link_font_color : '#FFF';
+    var header_color = (typeof header_override_color !== 'undefined') ? header_override_color : link_color;
+    %>
+     .tumblelog_name_<%- name %>.indash_header_wrapper.no_header_image .navigation h3,
+                               .tumblelog_name_<%- name %>.indash_header_wrapper.no_stretch_header .navigation h3 {
+                                                             color: <%- header_color %>;
+                                                         }
+
+    .tumblelog_name_<%- name %>.indash_header_wrapper.no_header_image .navigation .nav_icon,
+                              .tumblelog_name_<%- name %>.indash_header_wrapper.no_stretch_header .navigation .nav_icon,
+                                                        .tumblelog_name_<%- name %>.indash_header_wrapper.no_stretch_header .navigation .blog-search-input,
+                                                                                  .tumblelog_name_<%- name %>.indash_header_wrapper.no_header_image .navigation .blog-search-input {
+                                                                                                                color: <%- header_color %>;
+                                                                                                            }
+
+    .tumblelog_name_<%- name %>.indash_header_wrapper.no_header_image .navigation .blog-search-input::-webkit-input-placeholder {
+                                  color: <%- header_color %>;
+                                  opacity: 0.7;
+                              }
+    .tumblelog_name_<%- name %>.indash_header_wrapper.no_header_image .navigation .blog-search-input::-moz-placeholder {
+                                  color: <%- header_color %>;
+                                  opacity: 0.7;
+                              }
+    .tumblelog_name_<%- name %>.indash_header_wrapper.no_header_image .navigation .blog-search-input:-moz-placeholder {
+                                  color: <%- header_color %>;
+                                  opacity: 0.7;
+                              }
+    .tumblelog_name_<%- name %>.indash_header_wrapper.no_header_image .navigation .blog-search-input:-ms-input-placeholder {
+                                  color: <%- header_color %>;
+                                  opacity: 0.7;
+                              }
+
+    .tumblelog_name_<%- name %>.indash_header_wrapper.no_header_image .navigation button,
+                              .tumblelog_name_<%- name %>.indash_header_wrapper.no_stretch_header .navigation button {
+                                                            color:  <%- global_theme_params.background_color %>;
+                                                            background-color: <%- header_color %>;
+                                                        }
+
+    .tumblelog_name_<%- name %>.indash_header_wrapper .description a {
+                                  color: <%- global_theme_params.link_color %>;
+                              }
+
+    .post[data-tumblelog-name="<%- name %>"] .post_permalink {
+        border-color: <%- global_theme_params.background_color %> <%- global_theme_params.background_color %> transparent transparent;
+        box-shadow: 2px 0px 0px <%- global_theme_params.background_color %>, 0px -2px 0px <%- global_theme_params.background_color %>;
+    }
+
+    .indash_blog .show_more_posts {
+        background-color: <%- link_color %>;
+        border-color: <%- link_border_color %>;
+        color: <%- link_text_color %>;
+    }
+
+    /*
+    KEEP THIS HERE!
+    Firefox won't render the filter unless it's inline.
+    */
+    .tumblelog_name_<%- name %>.indash_header_wrapper .navigation_bg .sticky_header_image {
+                                  -webkit-filter: blur(10px);
+                                  filter: url('#blur');
+                              }
+    .tumblelog_name_<%- name %>.indash_blog_effects {
+                                  height: 1px;
+                                  left: -9999px;
+                                  position: absolute;
+                                  top: -9999px;
+                                  width: 1px;
+                              }
+    </style>
+    <svg class
+
+                 =
+                 "tumblelog_name_<%- name %> indash_blog_effects"
+         version
+
+                 =
+                 "1.1"
+         xmlns
+
+                 =
+                 "http://www.w3.org/2000/svg"
+         xmlns:xlink
+
+                 =
+                 "http://www.w3.org/1999/xlink"
+         xmlns:sketch
+
+                 =
+                 "http://www.bohemiancoding.com/sketch/ns"
+    > < filter id
+
+        =
+        "blur"
+        > < feGaussianBlur stdDeviation
+
+        =
+        "10"
+        /
+        > <
+
+        /
+        filter > <
+
+        /
+        svg >
+</script>
+<script id="tumblelog_header_template" type="text/template"><%
+// Checks if this is being rendered for the legacy popover
+var is_popover = (typeof popover === 'boolean') ? popover : false;
+// Checks if this is being rendered for the blog cards in Search
+var is_search_blog_card = (typeof search_blog_card === 'boolean') ? search_blog_card : false;
+var is_sponsored = (typeof sponsored === 'boolean') ? sponsored : false;
+
+var body_context = is_popover ? "AYwEbVwDAAj96g" : "AYwEbVwDAAn96g";
+var header_context = is_popover ? "AYwEbVwDAAj96Q" : "AYwEbVwDAAn96Q";
+var has_avatar = (avatar_url && global_theme_params.show_avatar);
+var has_bg_img = (global_theme_params.header_image_focused && global_theme_params.show_header_image);
+var has_title = (title && global_theme_params.show_title);
+var has_description = (description_sanitized && global_theme_params.show_description);
+
+// Hide the header image if the blog card is a popover/search blog card and the image is default
+var hide_default_header = (is_popover || is_search_blog_card) ? has_default_header && hide_headers_flag : false;
+
+var expanded_name = (cname) ? cname : name + ".tumblr.com";
+var description_color = (title_color_rgb) ? 'rgba(' + title_color_rgb + ',0.7)' : global_theme_params.title_color;
+var is_tumblelog_nsfw = (typeof nsfw === 'boolean') ? nsfw : false;
+var show_edit_appearance = true;
+var header_class = (global_theme_params.header_stretch) ? '' : ' no_stretch_header';
+header_class += (has_bg_img && !hide_default_header) ? '' : ' no_header_image';
+header_class += (has_avatar) ? '' : ' no_avatar';
+header_class += ((has_bg_img && !hide_default_header) && !has_avatar && !has_title && !has_description) ? ' header_image_only' : '';
+header_class += (has_title || has_description) ? ' has_info' : ' no_info';
+
+var show_peepr = (typeof has_peepr_header === 'boolean') ? has_peepr_header : true;
+%>
+<div class="indash_header_wrapper <%- header_class %> tumblelog_name_<%- name %>"
+     style="background-color:<%- global_theme_params.background_color %>; color:<%- global_theme_params.title_color %>"
+     data-context-path="<%- body_context %>"
+><% if (show_navigation) { %>
+    <div class="navigation">
+        <div class="navigation_bg" style="background-color: <%- global_theme_params.background_color %>"></div>
+        <div class="navigation_inner" data-context-path="<%- header_context %>"><% if (show_dismiss_controls) { %><% }
+            %><% if(name !== 'undefined') { %><h3><a href="<%- url %>" target="_blank"
+                                                     class="blog_name <% if (is_verified) { %> verified_badge_<%- badge_type %><% } %>"
+                <% if (show_peepr) { %>data-peepr='{"tumblelog":"<%- name %>"}'<% } %> rel="noopener"><%
+                if (is_verified) {
+
+                switch(badge_type) {
+                case 'normal':
+                %><i class="icon_verified_badge"></i><%
+                break;
+                case 'official':
+                %><span class="verified-label"><i class="icon_verified_badge"></i><span
+                        class="verified-text">Official</span></span><%
+                break;
+                }
+                }
+                %><span class="name"><% if (show_dismiss_controls) { %><span
+                        class="pre_name_text">Here&#039;s a blog: </span><% } %><%- name %></span><span
+                        class="full_url"><% if (show_dismiss_controls) { %><span class="pre_name_text">Here&#039;s a blog: </span><% } %><%- expanded_name %></span></a>
+            </h3><% } %>
+            <div class="header_controls"><% if (show_share_controls) { %><a
+                    class="open_blog_button nav_icon icon_export"></a><% } %><% if (!is_popover && customizable &&
+                show_edit_appearance) { %>
+                <button class="chrome big customize_button" type="button" data-blog-name="<%- name %>"
+                        data-blog-url="<%- url %>" data-settings-url="/settings/blog/<%- name %>">Edit appearance
+                </button>
+                <% } %><% if (!customizable && show_user_controls) { %><a data-snowman-container
+                                                                          class="info_popover_button nav_icon user_dropdown_lockup"><i
+                        class="user_dropdown_icon user_dropdown_icon_user icon_user_settings"></i></a><% } %><%
+                if(!is_popover && is_sponsored) { %>
+                <div class="sponsored_badge_container">
+                    <div class="sponsored_label">Sponsored</div>
+                    <div class="sponsored_badge mini light"><a href="/sponsors" class="sponsored_badge_icon"
+                                                               target="_blank"><span class="dollar_sign">$</span><span
+                            class="ring"></span></a></div>
+                </div>
+                <% } %><% if (!customizable && show_follow_button) { %><% if(following) { %>
+                <button class="chrome unfollow" type="button">Unfollow</button>
+                <button class="chrome follow" type="button" style="display:none;">Follow</button>
+                <% } else { %>
+                <button class="chrome unfollow" type="button" style="display:none;">Unfollow</button>
+                <button class="chrome follow" type="button">Follow</button>
+                <% } %><% } %>
+            </div>
+        </div>
+    </div>
+    <% } %><% if(global_theme_params.header_image_focused && global_theme_params.show_header_image &&
+    !hide_default_header) { %>
+    <div class="header_image_wrapper<% if(has_avatar) { %> has_avatar<% } %>">
+        <div class="header_image" style="background-image:url(<%- global_theme_params.header_image_focused %>)"><a
+                href="<%- url %>" target="_blank" rel="noopener" <% if (show_peepr) { %>data-peepr='{"tumblelog":"<%-
+            name %>"}'<% } %>><img src="<%- global_theme_params.header_image_focused %>" alt="<%- title %>"/></a></div>
+    </div>
+    <% } %><% if(avatar_url && global_theme_params.show_avatar) { %>
+    <div class="avatar <%- global_theme_params.avatar_shape %>"
+         style="background-color:<%- global_theme_params.background_color %>; background-image:url(<%- avatar_url %>); color:<%- global_theme_params.background_color %>;">
+        <a href="<%- url %>" target="_blank" rel="noopener" <% if (show_peepr) { %>data-peepr='{"tumblelog":"<%- name
+        %>"}'<% } %>><% if (can_pixelate_avatar) { %>
+        <canvas
+                class='post-activity-avatar-image post_sub_avatar_image pixelated-avatar needs-drawing hide <%- global_theme_params.avatar_shape %>'
+                data-image-url='<%- avatar_url %>'
+                width="64"
+                height="64"
+                alt='<%- title %>'/>
+        <% } else { %><img src="<%- avatar_url %>" alt="<%- title %>"/><% } %></a></div>
+    <% } %><% if(has_title || has_description) { %>
+    <div class="info_wrapper">
+        <div class="info"><% if(has_title) { %><h1 class="title"
+                                                   style="font-family:<%- title_font_family || 'inherit' %>; font-weight:<%- global_theme_params.title_font_weight %>;">
+            <%- title %></h1><% } %><% if(has_description) { %>
+            <div class="description" style="color:<%- description_color %>">
+                <div class="description_inner"><%= description_sanitized %></div>
+            </div>
+            <% } %>
+        </div>
+    </div>
+    <% } %>
+</div></script>
+<script id="tumblelog_header_customize_template" type="text/template"><%
+var stretch_header_class = (global_theme_params.header_stretch) ? '' : 'no_stretch_header';
+var description_color = (title_color_rgb) ? 'rgba(' + title_color_rgb + ',0.7)' : global_theme_params.title_color;
+var filetype_error = "That&#039;s not even an image...";
+var filetype_ok = "I am sorry";
+var filesize_error = "That's too big!<br/>Try making it 10 MB or less.";
+var filesize_ok = "Fine";
+%>
+<div class="indash_header_wrapper customize <%- stretch_header_class %>"
+     style="background-color:<%- global_theme_params.background_color %>; color:<%- global_theme_params.title_color %>;">
+    <div class="navigation">
+        <div class="navigation_inner"><h3>Edit appearance</h3>
+            <button class="chrome big black cancel_button" type="button">Cancel</button>
+            <button class="chrome big save_button" type="button" data-error="Woops :(" data-error-confirm="Ok"><span
+                    class="label">Save</span><span class="Knight-Rider-loader loader"><span
+                    class="Knight-Rider-bar"></span><span class="Knight-Rider-bar"></span><span
+                    class="Knight-Rider-bar"></span></span></button>
+        </div>
+    </div>
+    <div class="header_image"
+         style="background-image:url(<%- global_theme_params.header_image_focused %>); color:<%- global_theme_params.background_color %>;">
+        <img src="<%- global_theme_params.header_image %>" alt=""/>
+        <div class="off_overlay customize_overlay"></div>
+        <div class="header_dropzone customize_overlay" style="background-color:<%- global_theme_params.title_color %>">
+            <input id="tumblelog_header_image" data-filetype-ok="<%- filetype_ok %>"
+                   data-filetype-error="<%- filetype_error %>" data-filesize-ok="<%- filesize_ok %>"
+                   data-filesize-error="<%- filesize_error %>" name="photo" class="customize_overlay" type="file"
+                   accept="image/*"/></div>
+        <div class="header_image_glass customize_overlay"></div>
+        <button class="edit_header_image edit_button" type="button" title="Edit header image options"><i
+                class="icon icon_edit_pencil"></i></button>
+    </div>
+    <div class="avatar <%- (global_theme_params.avatar_shape === 'circle') ? 'circle' : 'square' %>"
+         style="background-image:url(<%- avatar_url %>); color:<%- global_theme_params.background_color %>;">
+        <div class="off_overlay customize_overlay"></div>
+        <div class="header_dropzone customize_overlay" style="background-color:<%- global_theme_params.title_color %>">
+            <input id="tumblelog_avatar_url" data-filetype-ok="<%- filetype_ok %>"
+                   data-filetype-error="<%- filetype_error %>" data-filesize-ok="<%- filesize_ok %>"
+                   data-filesize-error="<%- filesize_error %>" name="photo" class="customize_overlay" type="file"
+                   accept="image/*"/></div>
+        <button class="edit_avatar edit_button" type="button" title="Edit avatar options"><i
+                class="icon icon_edit_pencil"></i></button>
+    </div>
+    <div class="info"><h1 class="title"><span class="editable_text" data-placeholder="Title"
+                                              style="border-color:<%- global_theme_params.link_color %>; font-family:<%- title_font_family || 'inherit' %>; font-weight:<%- global_theme_params.title_font_weight %>;"><%- title %></span>
+    </h1>
+        <div class="description" style="color:<%- description_color %>"><span class="editable_text"
+                                                                              data-placeholder="Description"
+                                                                              style="border-color:<%- global_theme_params.link_color %>"><%- description %></span>
+        </div>
+    </div>
+    <div class="global_options">
+        <div class="link_color option"><i class="color_dot"
+                                          style="background-color:<%- global_theme_params.link_color %>"></i><span
+                class="option_label">Accent</span></div>
+        <div class="background_color option"><i class="color_dot"
+                                                style="background-color:<%- global_theme_params.background_color %>"></i><span
+                class="option_label">Background</span></div>
+    </div>
+    <div id="indash_header_overlay"></div>
+</div></script>
+<script id="tumblelog_header_position_template" type="text/template">
+    <div
+            class="indash_header_position_wrapper">
+        <div class="navigation">
+            <div class="navigation_inner"><h3>Position image</h3><% if(show_cancel) { %>
+                <button class="chrome big black cancel_header_position" type="button">Cancel</button>
+                <% } %>
+                <button class="chrome big save_header_position" type="button">Done</button>
+            </div>
+        </div>
+        <div class="header_zoom"><span class="zoom_in"></span>
+            <div class="zoom_control"></div>
+            <span class="zoom_out"></span></div>
+        <div class="full_image_wrapper">
+            <div class="Knight-Rider-loader loader centered">
+                <div class="Knight-Rider-bar" style="background-color:<%- loader_color %>"></div>
+                <div class="Knight-Rider-bar" style="background-color:<%- loader_color %>"></div>
+                <div class="Knight-Rider-bar" style="background-color:<%- loader_color %>"></div>
+            </div>
+            <div class="full_image" style="background-image: url(<%- image %>)"></div>
+        </div></div></script>
+<script id="tumblelog_header_info_popover_template" type="text/template">
+    <div
+            class="info_popover popover popover_gradient">
+        <div class="popover_inner">
+            <ul class="popover_options"><% if (!show_user_controls) { %><% if (typeof asks === 'boolean' && asks === true) {
+                %>
+                <li class="ask_menu_item"><a href="<%- url %>/ask">Ask a question</a></li>
+                <% } %><% if (typeof can_receive_messages === 'boolean' && can_receive_messages === true) { %>
+                <li class="messaging_menu_item"><a href="#">Send a message</a></li>
+                <% } else { %>
+                <li class="fan_mail_menu_item"><a href="/send/<%- name %>">Send fan mail</a></li>
+                <% } %><% } else { %><% if (typeof can_receive_messages === 'boolean' && can_receive_messages === false) {
+                %><% if (typeof asks === 'boolean' && asks === true){ %>
+                <li class="ask_menu_item"><a href="<%- url %>/ask">Ask a question</a></li>
+                <% } %>
+                <li class="fan_mail_menu_item"><a href="/send/<%- name %>">Send fan mail</a></li>
+                <% } %><% } %>
+                <li class="archive_menu_item"><a href="<%- url %>/archive" target="_blank">Archive</a></li>
+                <% if(typeof likes === 'boolean' && likes === true) { %>
+                <li><a href="https://www.tumblr.com/liked/by/<%- name %>" target="_blank">Likes</a></li>
+                <% } %><% if(typeof share_following === 'boolean' && share_following === true) { %>
+                <li><a href="https://www.tumblr.com/followed/by/<%- name %>" target="_blank">Following</a></li>
+                <% } %>
+                <li data-flag-subscribed-item class="toggle-subscription <%- subscriptionStatus %>"><a href="#"><span
+                        class="unsubscribe">Stop notifications</span><span class="subscribe">Get notifications</span></a>
+                    <div class="help-slidedown"></div>
+                </li>
+                <li class="web-subscribe-how-to"><span class="copy-howto">
+                        We’ll ding your phone whenever this Tumblr posts. (<a class="app-link" target="_blank"
+                                                                              href="/apps">You’ll want the app</a>.)                    </span>
+                </li>
+                <% if (show_flag_button) { %>
+                <li class="flag_menu_item"><a href="#">Report</a></li>
+                <% } %>
+                <li><a class="unblock" href="#">Unblock</a></li>
+                <li><a class="block" href="#">Block</a></li>
+            </ul>
+        </div></div></script>
+<script id="tumblelog_header_avatar_popover_template" type="text/template">
+    <div
+            class="popover popover_gradient nipple_on_left">
+        <div class="avatar_popover popover_inner">
+            <ul class="popover_options">
+                <li><a class="choose_photo"><i class="icon icon_view_grid_settings"/>Choose a photo</a></li>
+                <li><label class="binary_switch right"><input name="tumblelog_show_avatar" id="tumblelog_show_avatar"
+                                                              type="checkbox"<% if(global_theme_params.show_avatar){ print('
+                    checked') } %> /><span class="binary_switch_track"></span><span
+                            class="binary_switch_button"></span></label><label for="tumblelog_show_avatar">Show
+                    avatar</label></li>
+                <li class="avatar_shape_options">
+                    <div class="styles right"><a
+                            class="avatar_shape square<% if(global_theme_params.avatar_shape === 'square'){ print(" selected")
+                        } %>" data-value="square"></a><a
+                                class="avatar_shape circle<% if(global_theme_params.avatar_shape === 'circle'){ print("
+                                selected") } %>" data-value="circle"></a></div>
+                    <label for="tumblelog_avatar_shape">Shape</label></li>
+            </ul>
+        </div></div></script>
+<script id="tumblelog_header_title_popover_template" type="text/template">
+    <div
+            class="popover popover_gradient nipple_on_bottom">
+        <div class="title_popover popover_inner">
+            <ul class="popover_options">
+                <li><label class="binary_switch right"><input name="tumblelog_show_title" id="tumblelog_show_title"
+                                                              type="checkbox"<% if(global_theme_params.show_title){ print('
+                    checked') } %> /><span class="binary_switch_track"></span><span
+                            class="binary_switch_button"></span></label><label for="tumblelog_show_title">Show title</label>
+                </li>
+                <li>
+                    <div class="right">
+                        <div class="font_dropdown"><% if(current_font) { %>
+                            <div class="current_font"
+                                 style="font-family:<%- current_font.family %>; font-weight:<%- global_theme_params.title_font_weight %>;">
+                                <span><%- current_font.display_name %></span><i class="icon icon_arrow_carrot_down"/></div>
+                            <% } %>
+                        </div>
+                        <div class="font_weight_wrapper"><% if(global_theme_params.title_font_weight === "bold") { %><span
+                                class="font_weight on"></span><% } else { %><span class="font_weight"></span><% } %>
+                        </div>
+                    </div>
+                    <span class="label">Font</span></li>
+            </ul>
+        </div></div></script>
+<script id="tumblelog_header_description_popover_template" type="text/template">
+    <div
+            class="popover popover_gradient nipple_on_bottom">
+        <div class="description_popover popover_inner">
+            <ul class="popover_options">
+                <li><label class="binary_switch right"><input name="tumblelog_show_description"
+                                                              id="tumblelog_show_description" type="checkbox"<%
+                    if(global_theme_params.show_description){ print(' checked') } %> /><span
+                            class="binary_switch_track"></span><span class="binary_switch_button"></span></label><label
+                        for="tumblelog_show_description">Show description</label></li>
+            </ul>
+        </div></div></script>
+<script id="tumblelog_header_image_popover_template" type="text/template">
+    <div
+            class="popover popover_gradient nipple_on_right">
+        <div class="header_image_popover popover_inner">
+            <ul class="popover_options">
+                <li><a class="choose_photo"><i class="icon icon_view_grid_settings"/>Choose a photo</a></li>
+                <li><a class="position_photo"><i class="icon icon_reposition"/>Reposition</a></li>
+                <li><label class="binary_switch right"><input name="tumblelog_stretch_header_image"
+                                                              id="tumblelog_stretch_header_image" type="checkbox"<%
+                    if(global_theme_params.header_stretch){ print(' checked') } %> /><span
+                            class="binary_switch_track"></span><span class="binary_switch_button"></span></label><label
+                        for="tumblelog_stretch_header_image">Stretch header image</label></li>
+                <li><label class="binary_switch right"><input name="tumblelog_show_header_image"
+                                                              id="tumblelog_show_header_image" type="checkbox"<%
+                    if(global_theme_params.show_header_image){ print(' checked') } %> /><span
+                            class="binary_switch_track"></span><span class="binary_switch_button"></span></label><label
+                        for="tumblelog_show_header_image">Show header image</label></li>
+            </ul>
+        </div></div></script>
+<script id="tumblelog_header_color_popover_template" type="text/template">
+    <div
+            class="popover popover_gradient nipple_on_bottom">
+        <div class="popover_inner"></div></div></script>
+<script id="tumblelog_header_share_popover_template" type="text/template">
+    <div
+            class="popover popover_menu popover_gradient popover_share_social">
+        <div class="popover_inner">
+            <ul class="share_options active">
+                <li class="share_email popover_menu_item"><a class="popover_menu_item_anchor" href="#">Email</a></li>
+                <li class="share_facebook popover_menu_item"><a class="popover_menu_item_anchor" href="#">Facebook</a></li>
+                <li class="share_twitter popover_menu_item"><a class="popover_menu_item_anchor" href="#">Twitter</a></li>
+            </ul>
+            <form method="post" class="share_form email_form" id="share_email" novalidate>
+                <div class="form_wrapper">
+                    <div class="input_group">
+                        <ul>
+                            <li><input type="email" class="email_address" name="email_address" maxlength="100"
+                                       placeholder="Email" title="Email"><span class="cancel icon_close"></span></li>
+                            <li><textarea name="message" class="share_message" maxlength="255"
+                                          placeholder="Message (Optional)" title="Message (Optional)"></textarea></li>
+                        </ul>
+                    </div>
+                    <div class="reply_to">
+                        <div class="menu_item_option"><label class="binary_switch"><input type="checkbox"
+                                                                                          id="allow_reply_to"
+                                                                                          class="reply_to_input"
+                                                                                          name="allow_reply_to"><span
+                                class="binary_switch_track"></span><span class="binary_switch_button"></span></label></div>
+                        <label class="menu_item_label" for="allow_reply_to">
+                            Let them reply to <span class="reply_to_email">duncan.sterken123@gmail.com</span> </label></div>
+                    <div class="error_status"></div>
+                    <button type="submit" class="chrome blue email_submit" data-label-sending="Sending..." data-label="Send"
+                            disabled>Send
+                    </button>
+                </div>
+            </form>
+            <div class="status" data-sent="Sent!" data-error="Oops! Something went wrong."><span class="status_message">Sent!</span>
+            </div>
+        </div></div></script>
+<script id="post_moderation_popover_template" type="text/template">
+    <div
+            class="popover popover_gradient moderation_popover">
+        <div class="popover_inner">
+            <div class="popover_header no_nipple">
+                Report this post <a class="moderation_help_link"
+                                    href="https://www.tumblr.com/docs/discovery#moderationheader" target="_blank"><span
+                    class="icon_help"></span></a></div>
+            <form class="popover_form" action="/svc/flag" method="POST"><input type="hidden" name="tumblelog_name"
+                                                                               value="<%- tumblelog_name %>"/><input
+                    type="hidden" name="post_id" value="<%- post_id %>"/><input type="hidden" name="root_id"
+                                                                                value="<%- root_id %>"/>
+                <div class="popover_form_row explicit"><input type="radio" name="flag"
+                                                              class="flag_explicit moderation_input" id="flag_explicit"
+                                                              value="nsfw"/><label for="flag_explicit">Report sensitive
+                    content</label>
+                    <div class="popover_form_row_help">
+                        Adult-oriented content is currently being hidden ( <i class="icon_lock_thick_12"></i> ) but this
+                        post still showed up.
+                    </div>
+                </div>
+                <div class="popover_form_row spam"><input type="radio" name="flag" class="flag_spam moderation_input"
+                                                          id="flag_spam" value="spam"/><label for="flag_spam">Report
+                    spam</label></div>
+                <div class="popover_form_row general"><input type="radio" name="flag" class="flag_general moderation_input"
+                                                             id="flag_general" value="general"/><label for="flag_general">
+                    Report something else </label></div>
+                <div class="violation_types_wrapper">
+                    <div class="popover_form_row"><input type="radio" name="violation" id="violation_speech"
+                                                         class="moderation_input" value="hate"/><label
+                            for="violation_speech">Hate speech</label></div>
+                    <div class="popover_form_row"><input type="radio" name="violation" id="violation_minors"
+                                                         class="moderation_input" value="minors"/><label
+                            for="violation_minors">Harm to minors</label></div>
+                    <div class="popover_form_row"><input type="radio" name="violation" id="violation_selfharm"
+                                                         class="moderation_input" value="selfharm"/><label
+                            for="violation_selfharm">Promotion or glorification of self-harm</label></div>
+                    <div class="popover_form_row"><input type="radio" name="violation" id="violation_gore"
+                                                         class="moderation_input" value="gore"/><label for="violation_gore">Gore,
+                        mutilation, or bestiality</label></div>
+                    <div class="popover_form_row"><input type="radio" name="violation" id="violation_attribution"
+                                                         class="moderation_input" value="attribution"/><label
+                            for="violation_attribution">Misattribution or non-attribution</label></div>
+                    <div class="popover_form_row"><input type="radio" name="violation" id="violation_impersonation"
+                                                         class="moderation_input" value="impersonation"/><label
+                            for="violation_impersonation">Confusion or impersonation</label></div>
+                    <div class="popover_form_row"><input type="radio" name="violation" id="violation_harassment"
+                                                         class="moderation_input" value="harassment"/><label
+                            for="violation_harassment">Harassment</label></div>
+                </div>
+                <div class="popover_form_row ignore"><label class="binary_switch"><input type="checkbox" name="flag_ignore"
+                                                                                         class="flag_ignore"
+                                                                                         id="flag_ignore" checked><span
+                        class="binary_switch_track"></span><span class="binary_switch_button"></span></label><label
+                        class="ignore_name" for="flag_ignore">
+                    Ignore <%- tumblelog_name %> </label></div>
+                <button class="chrome red full_width submit_flag">Report</button>
+            </form>
+        </div></div></script>
+<script id="tumblelog_header_inline_styles" type="text/template">
+    <style id="indash_blog_styles"><%
+    var link_color = String(global_theme_params.link_color).toUpperCase();
+    var link_border_color = (link_color === '#FFF' || link_color === '#FFFFFF') ? '#F5F5F5' : link_color;
+    var link_text_color = (typeof link_font_color !== 'undefined') ? link_font_color : '#FFF';
+    var header_color = (typeof header_override_color !== 'undefined') ? header_override_color : link_color;
+    %>
+     .tumblelog_name_<%- name %>.indash_header_wrapper.no_header_image .navigation h3,
+                               .tumblelog_name_<%- name %>.indash_header_wrapper.no_stretch_header .navigation h3 {
+                                                             color: <%- header_color %>;
+                                                         }
+
+    .tumblelog_name_<%- name %>.indash_header_wrapper.no_header_image .navigation .nav_icon,
+                              .tumblelog_name_<%- name %>.indash_header_wrapper.no_stretch_header .navigation .nav_icon,
+                                                        .tumblelog_name_<%- name %>.indash_header_wrapper.no_stretch_header .navigation .blog-search-input,
+                                                                                  .tumblelog_name_<%- name %>.indash_header_wrapper.no_header_image .navigation .blog-search-input {
+                                                                                                                color: <%- header_color %>;
+                                                                                                            }
+
+    .tumblelog_name_<%- name %>.indash_header_wrapper.no_header_image .navigation .blog-search-input::-webkit-input-placeholder {
+                                  color: <%- header_color %>;
+                                  opacity: 0.7;
+                              }
+    .tumblelog_name_<%- name %>.indash_header_wrapper.no_header_image .navigation .blog-search-input::-moz-placeholder {
+                                  color: <%- header_color %>;
+                                  opacity: 0.7;
+                              }
+    .tumblelog_name_<%- name %>.indash_header_wrapper.no_header_image .navigation .blog-search-input:-moz-placeholder {
+                                  color: <%- header_color %>;
+                                  opacity: 0.7;
+                              }
+    .tumblelog_name_<%- name %>.indash_header_wrapper.no_header_image .navigation .blog-search-input:-ms-input-placeholder {
+                                  color: <%- header_color %>;
+                                  opacity: 0.7;
+                              }
+
+    .tumblelog_name_<%- name %>.indash_header_wrapper.no_header_image .navigation button,
+                              .tumblelog_name_<%- name %>.indash_header_wrapper.no_stretch_header .navigation button {
+                                                            color:  <%- global_theme_params.background_color %>;
+                                                            background-color: <%- header_color %>;
+                                                        }
+
+    .tumblelog_name_<%- name %>.indash_header_wrapper .description a {
+                                  color: <%- global_theme_params.link_color %>;
+                              }
+
+    .post[data-tumblelog-name="<%- name %>"] .post_permalink {
+        border-color: <%- global_theme_params.background_color %> <%- global_theme_params.background_color %> transparent transparent;
+        box-shadow: 2px 0px 0px <%- global_theme_params.background_color %>, 0px -2px 0px <%- global_theme_params.background_color %>;
+    }
+
+    .indash_blog .show_more_posts {
+        background-color: <%- link_color %>;
+        border-color: <%- link_border_color %>;
+        color: <%- link_text_color %>;
+    }
+
+    /*
+    KEEP THIS HERE!
+    Firefox won't render the filter unless it's inline.
+    */
+    .tumblelog_name_<%- name %>.indash_header_wrapper .navigation_bg .sticky_header_image {
+                                  -webkit-filter: blur(10px);
+                                  filter: url('#blur');
+                              }
+    .tumblelog_name_<%- name %>.indash_blog_effects {
+                                  height: 1px;
+                                  left: -9999px;
+                                  position: absolute;
+                                  top: -9999px;
+                                  width: 1px;
+                              }
+    </style>
+    <svg class
+
+                 =
+                 "tumblelog_name_<%- name %> indash_blog_effects"
+         version
+
+                 =
+                 "1.1"
+         xmlns
+
+                 =
+                 "http://www.w3.org/2000/svg"
+         xmlns:xlink
+
+                 =
+                 "http://www.w3.org/1999/xlink"
+         xmlns:sketch
+
+                 =
+                 "http://www.bohemiancoding.com/sketch/ns"
+    > < filter id
+
+        =
+        "blur"
+        > < feGaussianBlur stdDeviation
+
+        =
+        "10"
+        /
+        > <
+
+        /
+        filter > <
+
+        /
+        svg >
+</script>
+<script id="tumblelog_header_template" type="text/template"><%
+// Checks if this is being rendered for the legacy popover
+var is_popover = (typeof popover === 'boolean') ? popover : false;
+// Checks if this is being rendered for the blog cards in Search
+var is_search_blog_card = (typeof search_blog_card === 'boolean') ? search_blog_card : false;
+var is_sponsored = (typeof sponsored === 'boolean') ? sponsored : false;
+
+var body_context = is_popover ? "AYwEbVwDAAj96g" : "AYwEbVwDAAn96g";
+var header_context = is_popover ? "AYwEbVwDAAj96Q" : "AYwEbVwDAAn96Q";
+var has_avatar = (avatar_url && global_theme_params.show_avatar);
+var has_bg_img = (global_theme_params.header_image_focused && global_theme_params.show_header_image);
+var has_title = (title && global_theme_params.show_title);
+var has_description = (description_sanitized && global_theme_params.show_description);
+
+// Hide the header image if the blog card is a popover/search blog card and the image is default
+var hide_default_header = (is_popover || is_search_blog_card) ? has_default_header && hide_headers_flag : false;
+
+var expanded_name = (cname) ? cname : name + ".tumblr.com";
+var description_color = (title_color_rgb) ? 'rgba(' + title_color_rgb + ',0.7)' : global_theme_params.title_color;
+var is_tumblelog_nsfw = (typeof nsfw === 'boolean') ? nsfw : false;
+var show_edit_appearance = true;
+var header_class = (global_theme_params.header_stretch) ? '' : ' no_stretch_header';
+header_class += (has_bg_img && !hide_default_header) ? '' : ' no_header_image';
+header_class += (has_avatar) ? '' : ' no_avatar';
+header_class += ((has_bg_img && !hide_default_header) && !has_avatar && !has_title && !has_description) ? ' header_image_only' : '';
+header_class += (has_title || has_description) ? ' has_info' : ' no_info';
+
+var show_peepr = (typeof has_peepr_header === 'boolean') ? has_peepr_header : true;
+%>
+<div class="indash_header_wrapper <%- header_class %> tumblelog_name_<%- name %>"
+     style="background-color:<%- global_theme_params.background_color %>; color:<%- global_theme_params.title_color %>"
+     data-context-path="<%- body_context %>"
+><% if (show_navigation) { %>
+    <div class="navigation">
+        <div class="navigation_bg" style="background-color: <%- global_theme_params.background_color %>"></div>
+        <div class="navigation_inner" data-context-path="<%- header_context %>"><% if (show_dismiss_controls) { %><% }
+            %><% if(name !== 'undefined') { %><h3><a href="<%- url %>" target="_blank"
+                                                     class="blog_name <% if (is_verified) { %> verified_badge_<%- badge_type %><% } %>"
+                <% if (show_peepr) { %>data-peepr='{"tumblelog":"<%- name %>"}'<% } %> rel="noopener"><%
+                if (is_verified) {
+
+                switch(badge_type) {
+                case 'normal':
+                %><i class="icon_verified_badge"></i><%
+                break;
+                case 'official':
+                %><span class="verified-label"><i class="icon_verified_badge"></i><span
+                        class="verified-text">Official</span></span><%
+                break;
+                }
+                }
+                %><span class="name"><% if (show_dismiss_controls) { %><span
+                        class="pre_name_text">Here&#039;s a blog: </span><% } %><%- name %></span><span
+                        class="full_url"><% if (show_dismiss_controls) { %><span class="pre_name_text">Here&#039;s a blog: </span><% } %><%- expanded_name %></span></a>
+            </h3><% } %>
+            <div class="header_controls"><% if (show_share_controls) { %><a
+                    class="open_blog_button nav_icon icon_export"></a><% } %><% if (!is_popover && customizable &&
+                show_edit_appearance) { %>
+                <button class="chrome big customize_button" type="button" data-blog-name="<%- name %>"
+                        data-blog-url="<%- url %>" data-settings-url="/settings/blog/<%- name %>">Edit appearance
+                </button>
+                <% } %><% if (!customizable && show_user_controls) { %><a data-snowman-container
+                                                                          class="info_popover_button nav_icon user_dropdown_lockup"><i
+                        class="user_dropdown_icon user_dropdown_icon_user icon_user_settings"></i></a><% } %><%
+                if(!is_popover && is_sponsored) { %>
+                <div class="sponsored_badge_container">
+                    <div class="sponsored_label">Sponsored</div>
+                    <div class="sponsored_badge mini light"><a href="/sponsors" class="sponsored_badge_icon"
+                                                               target="_blank"><span class="dollar_sign">$</span><span
+                            class="ring"></span></a></div>
+                </div>
+                <% } %><% if (!customizable && show_follow_button) { %><% if(following) { %>
+                <button class="chrome unfollow" type="button">Unfollow</button>
+                <button class="chrome follow" type="button" style="display:none;">Follow</button>
+                <% } else { %>
+                <button class="chrome unfollow" type="button" style="display:none;">Unfollow</button>
+                <button class="chrome follow" type="button">Follow</button>
+                <% } %><% } %>
+            </div>
+        </div>
+    </div>
+    <% } %><% if(global_theme_params.header_image_focused && global_theme_params.show_header_image &&
+    !hide_default_header) { %>
+    <div class="header_image_wrapper<% if(has_avatar) { %> has_avatar<% } %>">
+        <div class="header_image" style="background-image:url(<%- global_theme_params.header_image_focused %>)"><a
+                href="<%- url %>" target="_blank" rel="noopener" <% if (show_peepr) { %>data-peepr='{"tumblelog":"<%-
+            name %>"}'<% } %>><img src="<%- global_theme_params.header_image_focused %>" alt="<%- title %>"/></a></div>
+    </div>
+    <% } %><% if(avatar_url && global_theme_params.show_avatar) { %>
+    <div class="avatar <%- global_theme_params.avatar_shape %>"
+         style="background-color:<%- global_theme_params.background_color %>; background-image:url(<%- avatar_url %>); color:<%- global_theme_params.background_color %>;">
+        <a href="<%- url %>" target="_blank" rel="noopener" <% if (show_peepr) { %>data-peepr='{"tumblelog":"<%- name
+        %>"}'<% } %>><% if (can_pixelate_avatar) { %>
+        <canvas
+                class='post-activity-avatar-image post_sub_avatar_image pixelated-avatar needs-drawing hide <%- global_theme_params.avatar_shape %>'
+                data-image-url='<%- avatar_url %>'
+                width="64"
+                height="64"
+                alt='<%- title %>'/>
+        <% } else { %><img src="<%- avatar_url %>" alt="<%- title %>"/><% } %></a></div>
+    <% } %><% if(has_title || has_description) { %>
+    <div class="info_wrapper">
+        <div class="info"><% if(has_title) { %><h1 class="title"
+                                                   style="font-family:<%- title_font_family || 'inherit' %>; font-weight:<%- global_theme_params.title_font_weight %>;">
+            <%- title %></h1><% } %><% if(has_description) { %>
+            <div class="description" style="color:<%- description_color %>">
+                <div class="description_inner"><%= description_sanitized %></div>
+            </div>
+            <% } %>
+        </div>
+    </div>
+    <% } %>
+</div></script>
+<script id="tumblelog_header_customize_template" type="text/template"><%
+var stretch_header_class = (global_theme_params.header_stretch) ? '' : 'no_stretch_header';
+var description_color = (title_color_rgb) ? 'rgba(' + title_color_rgb + ',0.7)' : global_theme_params.title_color;
+var filetype_error = "That&#039;s not even an image...";
+var filetype_ok = "I am sorry";
+var filesize_error = "That's too big!<br/>Try making it 10 MB or less.";
+var filesize_ok = "Fine";
+%>
+<div class="indash_header_wrapper customize <%- stretch_header_class %>"
+     style="background-color:<%- global_theme_params.background_color %>; color:<%- global_theme_params.title_color %>;">
+    <div class="navigation">
+        <div class="navigation_inner"><h3>Edit appearance</h3>
+            <button class="chrome big black cancel_button" type="button">Cancel</button>
+            <button class="chrome big save_button" type="button" data-error="Woops :(" data-error-confirm="Ok"><span
+                    class="label">Save</span><span class="Knight-Rider-loader loader"><span
+                    class="Knight-Rider-bar"></span><span class="Knight-Rider-bar"></span><span
+                    class="Knight-Rider-bar"></span></span></button>
+        </div>
+    </div>
+    <div class="header_image"
+         style="background-image:url(<%- global_theme_params.header_image_focused %>); color:<%- global_theme_params.background_color %>;">
+        <img src="<%- global_theme_params.header_image %>" alt=""/>
+        <div class="off_overlay customize_overlay"></div>
+        <div class="header_dropzone customize_overlay" style="background-color:<%- global_theme_params.title_color %>">
+            <input id="tumblelog_header_image" data-filetype-ok="<%- filetype_ok %>"
+                   data-filetype-error="<%- filetype_error %>" data-filesize-ok="<%- filesize_ok %>"
+                   data-filesize-error="<%- filesize_error %>" name="photo" class="customize_overlay" type="file"
+                   accept="image/*"/></div>
+        <div class="header_image_glass customize_overlay"></div>
+        <button class="edit_header_image edit_button" type="button" title="Edit header image options"><i
+                class="icon icon_edit_pencil"></i></button>
+    </div>
+    <div class="avatar <%- (global_theme_params.avatar_shape === 'circle') ? 'circle' : 'square' %>"
+         style="background-image:url(<%- avatar_url %>); color:<%- global_theme_params.background_color %>;">
+        <div class="off_overlay customize_overlay"></div>
+        <div class="header_dropzone customize_overlay" style="background-color:<%- global_theme_params.title_color %>">
+            <input id="tumblelog_avatar_url" data-filetype-ok="<%- filetype_ok %>"
+                   data-filetype-error="<%- filetype_error %>" data-filesize-ok="<%- filesize_ok %>"
+                   data-filesize-error="<%- filesize_error %>" name="photo" class="customize_overlay" type="file"
+                   accept="image/*"/></div>
+        <button class="edit_avatar edit_button" type="button" title="Edit avatar options"><i
+                class="icon icon_edit_pencil"></i></button>
+    </div>
+    <div class="info"><h1 class="title"><span class="editable_text" data-placeholder="Title"
+                                              style="border-color:<%- global_theme_params.link_color %>; font-family:<%- title_font_family || 'inherit' %>; font-weight:<%- global_theme_params.title_font_weight %>;"><%- title %></span>
+    </h1>
+        <div class="description" style="color:<%- description_color %>"><span class="editable_text"
+                                                                              data-placeholder="Description"
+                                                                              style="border-color:<%- global_theme_params.link_color %>"><%- description %></span>
+        </div>
+    </div>
+    <div class="global_options">
+        <div class="link_color option"><i class="color_dot"
+                                          style="background-color:<%- global_theme_params.link_color %>"></i><span
+                class="option_label">Accent</span></div>
+        <div class="background_color option"><i class="color_dot"
+                                                style="background-color:<%- global_theme_params.background_color %>"></i><span
+                class="option_label">Background</span></div>
+    </div>
+    <div id="indash_header_overlay"></div>
+</div></script>
+<script id="tumblelog_header_position_template" type="text/template">
+    <div
+            class="indash_header_position_wrapper">
+        <div class="navigation">
+            <div class="navigation_inner"><h3>Position image</h3><% if(show_cancel) { %>
+                <button class="chrome big black cancel_header_position" type="button">Cancel</button>
+                <% } %>
+                <button class="chrome big save_header_position" type="button">Done</button>
+            </div>
+        </div>
+        <div class="header_zoom"><span class="zoom_in"></span>
+            <div class="zoom_control"></div>
+            <span class="zoom_out"></span></div>
+        <div class="full_image_wrapper">
+            <div class="Knight-Rider-loader loader centered">
+                <div class="Knight-Rider-bar" style="background-color:<%- loader_color %>"></div>
+                <div class="Knight-Rider-bar" style="background-color:<%- loader_color %>"></div>
+                <div class="Knight-Rider-bar" style="background-color:<%- loader_color %>"></div>
+            </div>
+            <div class="full_image" style="background-image: url(<%- image %>)"></div>
+        </div></div></script>
+<script id="tumblelog_header_info_popover_template" type="text/template">
+    <div
+            class="info_popover popover popover_gradient">
+        <div class="popover_inner">
+            <ul class="popover_options"><% if (!show_user_controls) { %><% if (typeof asks === 'boolean' && asks === true) {
+                %>
+                <li class="ask_menu_item"><a href="<%- url %>/ask">Ask a question</a></li>
+                <% } %><% if (typeof can_receive_messages === 'boolean' && can_receive_messages === true) { %>
+                <li class="messaging_menu_item"><a href="#">Send a message</a></li>
+                <% } else { %>
+                <li class="fan_mail_menu_item"><a href="/send/<%- name %>">Send fan mail</a></li>
+                <% } %><% } else { %><% if (typeof can_receive_messages === 'boolean' && can_receive_messages === false) {
+                %><% if (typeof asks === 'boolean' && asks === true){ %>
+                <li class="ask_menu_item"><a href="<%- url %>/ask">Ask a question</a></li>
+                <% } %>
+                <li class="fan_mail_menu_item"><a href="/send/<%- name %>">Send fan mail</a></li>
+                <% } %><% } %>
+                <li class="archive_menu_item"><a href="<%- url %>/archive" target="_blank">Archive</a></li>
+                <% if(typeof likes === 'boolean' && likes === true) { %>
+                <li><a href="https://www.tumblr.com/liked/by/<%- name %>" target="_blank">Likes</a></li>
+                <% } %><% if(typeof share_following === 'boolean' && share_following === true) { %>
+                <li><a href="https://www.tumblr.com/followed/by/<%- name %>" target="_blank">Following</a></li>
+                <% } %>
+                <li data-flag-subscribed-item class="toggle-subscription <%- subscriptionStatus %>"><a href="#"><span
+                        class="unsubscribe">Stop notifications</span><span class="subscribe">Get notifications</span></a>
+                    <div class="help-slidedown"></div>
+                </li>
+                <li class="web-subscribe-how-to"><span class="copy-howto">
+                        We’ll ding your phone whenever this Tumblr posts. (<a class="app-link" target="_blank"
+                                                                              href="/apps">You’ll want the app</a>.)                    </span>
+                </li>
+                <% if (show_flag_button) { %>
+                <li class="flag_menu_item"><a href="#">Report</a></li>
+                <% } %>
+                <li><a class="unblock" href="#">Unblock</a></li>
+                <li><a class="block" href="#">Block</a></li>
+            </ul>
+        </div></div></script>
+<script id="tumblelog_header_avatar_popover_template" type="text/template">
+    <div
+            class="popover popover_gradient nipple_on_left">
+        <div class="avatar_popover popover_inner">
+            <ul class="popover_options">
+                <li><a class="choose_photo"><i class="icon icon_view_grid_settings"/>Choose a photo</a></li>
+                <li><label class="binary_switch right"><input name="tumblelog_show_avatar" id="tumblelog_show_avatar"
+                                                              type="checkbox"<% if(global_theme_params.show_avatar){ print('
+                    checked') } %> /><span class="binary_switch_track"></span><span
+                            class="binary_switch_button"></span></label><label for="tumblelog_show_avatar">Show
+                    avatar</label></li>
+                <li class="avatar_shape_options">
+                    <div class="styles right"><a
+                            class="avatar_shape square<% if(global_theme_params.avatar_shape === 'square'){ print(" selected")
+                        } %>" data-value="square"></a><a
+                                class="avatar_shape circle<% if(global_theme_params.avatar_shape === 'circle'){ print("
+                                selected") } %>" data-value="circle"></a></div>
+                    <label for="tumblelog_avatar_shape">Shape</label></li>
+            </ul>
+        </div></div></script>
+<script id="tumblelog_header_title_popover_template" type="text/template">
+    <div
+            class="popover popover_gradient nipple_on_bottom">
+        <div class="title_popover popover_inner">
+            <ul class="popover_options">
+                <li><label class="binary_switch right"><input name="tumblelog_show_title" id="tumblelog_show_title"
+                                                              type="checkbox"<% if(global_theme_params.show_title){ print('
+                    checked') } %> /><span class="binary_switch_track"></span><span
+                            class="binary_switch_button"></span></label><label for="tumblelog_show_title">Show title</label>
+                </li>
+                <li>
+                    <div class="right">
+                        <div class="font_dropdown"><% if(current_font) { %>
+                            <div class="current_font"
+                                 style="font-family:<%- current_font.family %>; font-weight:<%- global_theme_params.title_font_weight %>;">
+                                <span><%- current_font.display_name %></span><i class="icon icon_arrow_carrot_down"/></div>
+                            <% } %>
+                        </div>
+                        <div class="font_weight_wrapper"><% if(global_theme_params.title_font_weight === "bold") { %><span
+                                class="font_weight on"></span><% } else { %><span class="font_weight"></span><% } %>
+                        </div>
+                    </div>
+                    <span class="label">Font</span></li>
+            </ul>
+        </div></div></script>
+<script id="tumblelog_header_description_popover_template" type="text/template">
+    <div
+            class="popover popover_gradient nipple_on_bottom">
+        <div class="description_popover popover_inner">
+            <ul class="popover_options">
+                <li><label class="binary_switch right"><input name="tumblelog_show_description"
+                                                              id="tumblelog_show_description" type="checkbox"<%
+                    if(global_theme_params.show_description){ print(' checked') } %> /><span
+                            class="binary_switch_track"></span><span class="binary_switch_button"></span></label><label
+                        for="tumblelog_show_description">Show description</label></li>
+            </ul>
+        </div></div></script>
+<script id="tumblelog_header_image_popover_template" type="text/template">
+    <div
+            class="popover popover_gradient nipple_on_right">
+        <div class="header_image_popover popover_inner">
+            <ul class="popover_options">
+                <li><a class="choose_photo"><i class="icon icon_view_grid_settings"/>Choose a photo</a></li>
+                <li><a class="position_photo"><i class="icon icon_reposition"/>Reposition</a></li>
+                <li><label class="binary_switch right"><input name="tumblelog_stretch_header_image"
+                                                              id="tumblelog_stretch_header_image" type="checkbox"<%
+                    if(global_theme_params.header_stretch){ print(' checked') } %> /><span
+                            class="binary_switch_track"></span><span class="binary_switch_button"></span></label><label
+                        for="tumblelog_stretch_header_image">Stretch header image</label></li>
+                <li><label class="binary_switch right"><input name="tumblelog_show_header_image"
+                                                              id="tumblelog_show_header_image" type="checkbox"<%
+                    if(global_theme_params.show_header_image){ print(' checked') } %> /><span
+                            class="binary_switch_track"></span><span class="binary_switch_button"></span></label><label
+                        for="tumblelog_show_header_image">Show header image</label></li>
+            </ul>
+        </div></div>
+</script>
+<script id="tumblelog_header_color_popover_template" type="text/template">
+    <div class="popover popover_gradient nipple_on_bottom">
+        <div class="popover_inner"></div></div>
+</script>
+<script id="tumblelog_header_share_popover_template" type="text/template">
+    <div
+            class="popover popover_menu popover_gradient popover_share_social">
+        <div class="popover_inner">
+            <ul class="share_options active">
+                <li class="share_email popover_menu_item"><a class="popover_menu_item_anchor" href="#">Email</a></li>
+                <li class="share_facebook popover_menu_item"><a class="popover_menu_item_anchor" href="#">Facebook</a></li>
+                <li class="share_twitter popover_menu_item"><a class="popover_menu_item_anchor" href="#">Twitter</a></li>
+            </ul>
+            <form method="post" class="share_form email_form" id="share_email" novalidate>
+                <div class="form_wrapper">
+                    <div class="input_group">
+                        <ul>
+                            <li><input type="email" class="email_address" name="email_address" maxlength="100"
+                                       placeholder="Email" title="Email"><span class="cancel icon_close"></span></li>
+                            <li><textarea name="message" class="share_message" maxlength="255"
+                                          placeholder="Message (Optional)" title="Message (Optional)"></textarea></li>
+                        </ul>
+                    </div>
+                    <div class="error_status"></div>
+                    <button type="submit" class="chrome blue email_submit" data-label-sending="Sending..." data-label="Send"
+                            disabled>Send
+                    </button>
+                </div>
+            </form>
+            <div class="status" data-sent="Sent!" data-error="Oops! Something went wrong."><span class="status_message">Sent!</span>
+            </div>
+        </div></div></script>
+<script id="blocked_blogs_template" type="text/template"><% _.each(tumblelogs, function(tumblelog) { %>
+<li class="blog" data-tumblelog="<%- tumblelog.name %>">
+    <div class="blog-info"><a class="avatar" href="<%- tumblelog.url %>"
+                              data-tumblelog-popover='<%- tumblelog.popover %>' target="_blank">
+        <canvas class="pixelated-avatar needs-drawing" data-image-url="<%- tumblelog.avatar_url %>" width="40"
+                height="40"></canvas>
+    </a><% if (tumblelog.name == '') { %>
+        <div><strong>(Blog suspended or deleted)</strong></div>
+        <% } else { %><a class="name" href="<%- tumblelog.url %>" target="_blank"><%- tumblelog.name %></a><% } %>
+    </div>
+    <button class="chrome big stop-blocking" type="button"><span class="label">Unblock</span><span
+            class="Knight-Rider-loader animate"><span class="Knight-Rider-bar"></span><span
+            class="Knight-Rider-bar"></span><span class="Knight-Rider-bar"></span></span></button>
+    <div class="clear"></div>
+</li><% }); %></script>
+
+
+<script id="tumblelog_popover_template"
+        type="text/template"><% var is_poptica = (typeof is_poptica === 'boolean') ? is_poptica : false; %>
+<div class="popover popover_gradient tumblelog_popover" data-context-path="AYwEbVwDAAj96g">
+    <div class="popover_content_wrapper">
+        <div class="popover_inner"></div>
+    </div>
+</div></script>
+<script id="recommended_blogs_template" type="text/template"><h4 class="tumblelog_info_heading"><span
+        class="followed_blog"><%= followed_blog %></span> reblogs stuff from:
+</h4></script>
+<script id="highlighted_posts_template" type="text/template"><%
+var color = (typeof loader_color !== 'undefined') ? loader_color : '#D9D9D9';
+%>
+<div class="Knight-Rider-loader centered animate">
+    <div class="Knight-Rider-bar" style="background-color:<%= color %>"></div>
+    <div class="Knight-Rider-bar" style="background-color:<%= color %>"></div>
+    <div class="Knight-Rider-bar" style="background-color:<%= color %>"></div>
+</div></script>
+<script id="tumblelog_popover_info"
+        type="text/template"><% if(typeof url === 'string') { %><% if(typeof avatar_url === 'string') { %><a
+        class="avatar" href="<%= url %>" target="_blank" style="background-image:url(<%= avatar_url %>)"></a><% } %>
+<div class="name"><% if(typeof title === 'string' && title !== '') { %><h3><a href="<%= url %>" target="_blank"><%= name
+    %></a></h3><h4><%= title %></h4><% } else { %><h3 class="solo"><a href="<%= url %>" target="_blank"><%= name %></a>
+</h3><% } %>
+</div><% if(typeof is_you === 'undefined' || is_you !== true) { %>
+<div class="tumblelog_nav"><% if (show_menu === true) { %>
+    <div class="tumblelog_menu"><a class="tumblelog_menu_btn" href="#"></a>
+        <div class="tumblelog_menu_popover">
+            <ul><% if(typeof asks === 'boolean' && asks === true) { %>
+                <li><a class="ask" href="<%= url %>/ask" data-anonymous-ask="<%= anonymous_asks %>"
+                       data-tumblelog-name="<%= name %>" target="_blank">Ask a question</a></li>
+                <% } %>
+                <li><a class="fan_mail" href="/send/<%= name %>">Send fan mail</a></li>
+                <li><a href="<%= url %>/archive" target="_blank">Archive</a></li>
+                <% if(typeof likes === 'boolean' && likes === true) { %>
+                <li><a href="/liked/by/<%= name %>">Likes</a></li>
+                <% } %><% if(typeof ignoring === 'boolean' && ignoring === false) { %>
+                <li><a class="ignore" href="#">Ignore</a></li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+    <% } %><% if(typeof ignoring === 'undefined' || ignoring !== true) { %><% if(typeof following === 'boolean' &&
+    following === true) { %>
+    <div class="follow_nav is_following"><% } else { %>
+        <div class="follow_nav"><% } %><a class="unfollow chrome" href="/follow/<%= name %>">Unfollow</a><a
+                class="follow chrome blue" href="/follow/<%= name %>">Follow</a></div>
+        <% } %>
+    </div>
+    <% } %><% } %></script>
+<script id="poptica_template" type="text/template"><%
+var has_bg_img = (global_theme_params.header_image_focused && global_theme_params.show_header_image);
+var has_title = (title && global_theme_params.show_title);
+var has_description = (description_sanitized && global_theme_params.show_description);
+
+var header_class = (global_theme_params.header_stretch) ? '' : ' no_stretch_header';
+header_class += (has_bg_img) ? '' : ' no_header_image';
+header_class += (has_bg_img && !has_title && !has_description) ? ' header_image_only' : '';
+%>
+<div class="poptica_header_wrapper <%= header_class %>" style="color:<%= global_theme_params.title_color %>"><%
+    if(has_bg_img) { %>
+    <div class="header_image_wrapper">
+        <div class="header_image" style="background-image:url(<%- global_theme_params.header_image_focused %>)"><img
+                src="<%- global_theme_params.header_image_focused %>" alt=""/></div>
+    </div>
+    <% } %>
+</div></script>
+<script id="tumblelog_header_inline_styles" type="text/template">
+    <style id="indash_blog_styles"><%
+    var link_color = String(global_theme_params.link_color).toUpperCase();
+    var link_border_color = (link_color === '#FFF' || link_color === '#FFFFFF') ? '#F5F5F5' : link_color;
+    var link_text_color = (typeof link_font_color !== 'undefined') ? link_font_color : '#FFF';
+    var header_color = (typeof header_override_color !== 'undefined') ? header_override_color : link_color;
+    %>
+     .tumblelog_name_<%- name %>.indash_header_wrapper.no_header_image .navigation h3,
+                               .tumblelog_name_<%- name %>.indash_header_wrapper.no_stretch_header .navigation h3 {
+                                                             color: <%- header_color %>;
+                                                         }
+
+    .tumblelog_name_<%- name %>.indash_header_wrapper.no_header_image .navigation .nav_icon,
+                              .tumblelog_name_<%- name %>.indash_header_wrapper.no_stretch_header .navigation .nav_icon,
+                                                        .tumblelog_name_<%- name %>.indash_header_wrapper.no_stretch_header .navigation .blog-search-input,
+                                                                                  .tumblelog_name_<%- name %>.indash_header_wrapper.no_header_image .navigation .blog-search-input {
+                                                                                                                color: <%- header_color %>;
+                                                                                                            }
+
+    .tumblelog_name_<%- name %>.indash_header_wrapper.no_header_image .navigation .blog-search-input::-webkit-input-placeholder {
+                                  color: <%- header_color %>;
+                                  opacity: 0.7;
+                              }
+    .tumblelog_name_<%- name %>.indash_header_wrapper.no_header_image .navigation .blog-search-input::-moz-placeholder {
+                                  color: <%- header_color %>;
+                                  opacity: 0.7;
+                              }
+    .tumblelog_name_<%- name %>.indash_header_wrapper.no_header_image .navigation .blog-search-input:-moz-placeholder {
+                                  color: <%- header_color %>;
+                                  opacity: 0.7;
+                              }
+    .tumblelog_name_<%- name %>.indash_header_wrapper.no_header_image .navigation .blog-search-input:-ms-input-placeholder {
+                                  color: <%- header_color %>;
+                                  opacity: 0.7;
+                              }
+
+    .tumblelog_name_<%- name %>.indash_header_wrapper.no_header_image .navigation button,
+                              .tumblelog_name_<%- name %>.indash_header_wrapper.no_stretch_header .navigation button {
+                                                            color:  <%- global_theme_params.background_color %>;
+                                                            background-color: <%- header_color %>;
+                                                        }
+
+    .tumblelog_name_<%- name %>.indash_header_wrapper .description a {
+                                  color: <%- global_theme_params.link_color %>;
+                              }
+
+    .post[data-tumblelog-name="<%- name %>"] .post_permalink {
+        border-color: <%- global_theme_params.background_color %> <%- global_theme_params.background_color %> transparent transparent;
+        box-shadow: 2px 0px 0px <%- global_theme_params.background_color %>, 0px -2px 0px <%- global_theme_params.background_color %>;
+    }
+
+    .indash_blog .show_more_posts {
+        background-color: <%- link_color %>;
+        border-color: <%- link_border_color %>;
+        color: <%- link_text_color %>;
+    }
+
+    /*
+    KEEP THIS HERE!
+    Firefox won't render the filter unless it's inline.
+    */
+    .tumblelog_name_<%- name %>.indash_header_wrapper .navigation_bg .sticky_header_image {
+                                  -webkit-filter: blur(10px);
+                                  filter: url('#blur');
+                              }
+    .tumblelog_name_<%- name %>.indash_blog_effects {
+                                  height: 1px;
+                                  left: -9999px;
+                                  position: absolute;
+                                  top: -9999px;
+                                  width: 1px;
+                              }
+    </style>
+    <svg class
+
+                 =
+                 "tumblelog_name_<%- name %> indash_blog_effects"
+         version
+
+                 =
+                 "1.1"
+         xmlns
+
+                 =
+                 "http://www.w3.org/2000/svg"
+         xmlns:xlink
+
+                 =
+                 "http://www.w3.org/1999/xlink"
+         xmlns:sketch
+
+                 =
+                 "http://www.bohemiancoding.com/sketch/ns"
+    > < filter id
+
+        =
+        "blur"
+        > < feGaussianBlur stdDeviation
+
+        =
+        "10"
+        /
+        > <
+
+        /
+        filter > <
+
+        /
+        svg >
+</script>
+<script id="tumblelog_header_template" type="text/template"><%
+// Checks if this is being rendered for the legacy popover
+var is_popover = (typeof popover === 'boolean') ? popover : false;
+// Checks if this is being rendered for the blog cards in Search
+var is_search_blog_card = (typeof search_blog_card === 'boolean') ? search_blog_card : false;
+var is_sponsored = (typeof sponsored === 'boolean') ? sponsored : false;
+
+var body_context = is_popover ? "AYwEbVwDAAj96g" : "AYwEbVwDAAn96g";
+var header_context = is_popover ? "AYwEbVwDAAj96Q" : "AYwEbVwDAAn96Q";
+var has_avatar = (avatar_url && global_theme_params.show_avatar);
+var has_bg_img = (global_theme_params.header_image_focused && global_theme_params.show_header_image);
+var has_title = (title && global_theme_params.show_title);
+var has_description = (description_sanitized && global_theme_params.show_description);
+
+// Hide the header image if the blog card is a popover/search blog card and the image is default
+var hide_default_header = (is_popover || is_search_blog_card) ? has_default_header && hide_headers_flag : false;
+
+var expanded_name = (cname) ? cname : name + ".tumblr.com";
+var description_color = (title_color_rgb) ? 'rgba(' + title_color_rgb + ',0.7)' : global_theme_params.title_color;
+var is_tumblelog_nsfw = (typeof nsfw === 'boolean') ? nsfw : false;
+var show_edit_appearance = true;
+var header_class = (global_theme_params.header_stretch) ? '' : ' no_stretch_header';
+header_class += (has_bg_img && !hide_default_header) ? '' : ' no_header_image';
+header_class += (has_avatar) ? '' : ' no_avatar';
+header_class += ((has_bg_img && !hide_default_header) && !has_avatar && !has_title && !has_description) ? ' header_image_only' : '';
+header_class += (has_title || has_description) ? ' has_info' : ' no_info';
+
+var show_peepr = (typeof has_peepr_header === 'boolean') ? has_peepr_header : true;
+%>
+<div class="indash_header_wrapper <%- header_class %> tumblelog_name_<%- name %>"
+     style="background-color:<%- global_theme_params.background_color %>; color:<%- global_theme_params.title_color %>"
+     data-context-path="<%- body_context %>"
+><% if (show_navigation) { %>
+    <div class="navigation">
+        <div class="navigation_bg" style="background-color: <%- global_theme_params.background_color %>"></div>
+        <div class="navigation_inner" data-context-path="<%- header_context %>"><% if (show_dismiss_controls) { %><% }
+            %><% if(name !== 'undefined') { %><h3><a href="<%- url %>" target="_blank"
+                                                     class="blog_name <% if (is_verified) { %> verified_badge_<%- badge_type %><% } %>"
+                <% if (show_peepr) { %>data-peepr='{"tumblelog":"<%- name %>"}'<% } %> rel="noopener"><%
+                if (is_verified) {
+
+                switch(badge_type) {
+                case 'normal':
+                %><i class="icon_verified_badge"></i><%
+                break;
+                case 'official':
+                %><span class="verified-label"><i class="icon_verified_badge"></i><span
+                        class="verified-text">Official</span></span><%
+                break;
+                }
+                }
+                %><span class="name"><% if (show_dismiss_controls) { %><span
+                        class="pre_name_text">Here&#039;s a blog: </span><% } %><%- name %></span><span
+                        class="full_url"><% if (show_dismiss_controls) { %><span class="pre_name_text">Here&#039;s a blog: </span><% } %><%- expanded_name %></span></a>
+            </h3><% } %>
+            <div class="header_controls"><% if (show_share_controls) { %><a
+                    class="open_blog_button nav_icon icon_export"></a><% } %><% if (!is_popover && customizable &&
+                show_edit_appearance) { %>
+                <button class="chrome big customize_button" type="button" data-blog-name="<%- name %>"
+                        data-blog-url="<%- url %>" data-settings-url="/settings/blog/<%- name %>">Edit appearance
+                </button>
+                <% } %><% if (!customizable && show_user_controls) { %><a data-snowman-container
+                                                                          class="info_popover_button nav_icon user_dropdown_lockup"><i
+                        class="user_dropdown_icon user_dropdown_icon_user icon_user_settings"></i></a><% } %><%
+                if(!is_popover && is_sponsored) { %>
+                <div class="sponsored_badge_container">
+                    <div class="sponsored_label">Sponsored</div>
+                    <div class="sponsored_badge mini light"><a href="/sponsors" class="sponsored_badge_icon"
+                                                               target="_blank"><span class="dollar_sign">$</span><span
+                            class="ring"></span></a></div>
+                </div>
+                <% } %><% if (!customizable && show_follow_button) { %><% if(following) { %>
+                <button class="chrome unfollow" type="button">Unfollow</button>
+                <button class="chrome follow" type="button" style="display:none;">Follow</button>
+                <% } else { %>
+                <button class="chrome unfollow" type="button" style="display:none;">Unfollow</button>
+                <button class="chrome follow" type="button">Follow</button>
+                <% } %><% } %>
+            </div>
+        </div>
+    </div>
+    <% } %><% if(global_theme_params.header_image_focused && global_theme_params.show_header_image &&
+    !hide_default_header) { %>
+    <div class="header_image_wrapper<% if(has_avatar) { %> has_avatar<% } %>">
+        <div class="header_image" style="background-image:url(<%- global_theme_params.header_image_focused %>)"><a
+                href="<%- url %>" target="_blank" rel="noopener" <% if (show_peepr) { %>data-peepr='{"tumblelog":"<%-
+            name %>"}'<% } %>><img src="<%- global_theme_params.header_image_focused %>" alt="<%- title %>"/></a></div>
+    </div>
+    <% } %><% if(avatar_url && global_theme_params.show_avatar) { %>
+    <div class="avatar <%- global_theme_params.avatar_shape %>"
+         style="background-color:<%- global_theme_params.background_color %>; background-image:url(<%- avatar_url %>); color:<%- global_theme_params.background_color %>;">
+        <a href="<%- url %>" target="_blank" rel="noopener" <% if (show_peepr) { %>data-peepr='{"tumblelog":"<%- name
+        %>"}'<% } %>><% if (can_pixelate_avatar) { %>
+        <canvas
+                class='post-activity-avatar-image post_sub_avatar_image pixelated-avatar needs-drawing hide <%- global_theme_params.avatar_shape %>'
+                data-image-url='<%- avatar_url %>'
+                width="64"
+                height="64"
+                alt='<%- title %>'/>
+        <% } else { %><img src="<%- avatar_url %>" alt="<%- title %>"/><% } %></a></div>
+    <% } %><% if(has_title || has_description) { %>
+    <div class="info_wrapper">
+        <div class="info"><% if(has_title) { %><h1 class="title"
+                                                   style="font-family:<%- title_font_family || 'inherit' %>; font-weight:<%- global_theme_params.title_font_weight %>;">
+            <%- title %></h1><% } %><% if(has_description) { %>
+            <div class="description" style="color:<%- description_color %>">
+                <div class="description_inner"><%= description_sanitized %></div>
+            </div>
+            <% } %>
+        </div>
+    </div>
+    <% } %>
+</div></script>
+<script id="tumblelog_header_customize_template" type="text/template"><%
+var stretch_header_class = (global_theme_params.header_stretch) ? '' : 'no_stretch_header';
+var description_color = (title_color_rgb) ? 'rgba(' + title_color_rgb + ',0.7)' : global_theme_params.title_color;
+var filetype_error = "That&#039;s not even an image...";
+var filetype_ok = "I am sorry";
+var filesize_error = "That's too big!<br/>Try making it 10 MB or less.";
+var filesize_ok = "Fine";
+%>
+<div class="indash_header_wrapper customize <%- stretch_header_class %>"
+     style="background-color:<%- global_theme_params.background_color %>; color:<%- global_theme_params.title_color %>;">
+    <div class="navigation">
+        <div class="navigation_inner"><h3>Edit appearance</h3>
+            <button class="chrome big black cancel_button" type="button">Cancel</button>
+            <button class="chrome big save_button" type="button" data-error="Woops :(" data-error-confirm="Ok"><span
+                    class="label">Save</span><span class="Knight-Rider-loader loader"><span
+                    class="Knight-Rider-bar"></span><span class="Knight-Rider-bar"></span><span
+                    class="Knight-Rider-bar"></span></span></button>
+        </div>
+    </div>
+    <div class="header_image"
+         style="background-image:url(<%- global_theme_params.header_image_focused %>); color:<%- global_theme_params.background_color %>;">
+        <img src="<%- global_theme_params.header_image %>" alt=""/>
+        <div class="off_overlay customize_overlay"></div>
+        <div class="header_dropzone customize_overlay" style="background-color:<%- global_theme_params.title_color %>">
+            <input id="tumblelog_header_image" data-filetype-ok="<%- filetype_ok %>"
+                   data-filetype-error="<%- filetype_error %>" data-filesize-ok="<%- filesize_ok %>"
+                   data-filesize-error="<%- filesize_error %>" name="photo" class="customize_overlay" type="file"
+                   accept="image/*"/></div>
+        <div class="header_image_glass customize_overlay"></div>
+        <button class="edit_header_image edit_button" type="button" title="Edit header image options"><i
+                class="icon icon_edit_pencil"></i></button>
+    </div>
+    <div class="avatar <%- (global_theme_params.avatar_shape === 'circle') ? 'circle' : 'square' %>"
+         style="background-image:url(<%- avatar_url %>); color:<%- global_theme_params.background_color %>;">
+        <div class="off_overlay customize_overlay"></div>
+        <div class="header_dropzone customize_overlay" style="background-color:<%- global_theme_params.title_color %>">
+            <input id="tumblelog_avatar_url" data-filetype-ok="<%- filetype_ok %>"
+                   data-filetype-error="<%- filetype_error %>" data-filesize-ok="<%- filesize_ok %>"
+                   data-filesize-error="<%- filesize_error %>" name="photo" class="customize_overlay" type="file"
+                   accept="image/*"/></div>
+        <button class="edit_avatar edit_button" type="button" title="Edit avatar options"><i
+                class="icon icon_edit_pencil"></i></button>
+    </div>
+    <div class="info"><h1 class="title"><span class="editable_text" data-placeholder="Title"
+                                              style="border-color:<%- global_theme_params.link_color %>; font-family:<%- title_font_family || 'inherit' %>; font-weight:<%- global_theme_params.title_font_weight %>;"><%- title %></span>
+    </h1>
+        <div class="description" style="color:<%- description_color %>"><span class="editable_text"
+                                                                              data-placeholder="Description"
+                                                                              style="border-color:<%- global_theme_params.link_color %>"><%- description %></span>
+        </div>
+    </div>
+    <div class="global_options">
+        <div class="link_color option"><i class="color_dot"
+                                          style="background-color:<%- global_theme_params.link_color %>"></i><span
+                class="option_label">Accent</span></div>
+        <div class="background_color option"><i class="color_dot"
+                                                style="background-color:<%- global_theme_params.background_color %>"></i><span
+                class="option_label">Background</span></div>
+    </div>
+    <div id="indash_header_overlay"></div>
+</div></script>
+<script id="tumblelog_header_position_template" type="text/template">
+    <div
+            class="indash_header_position_wrapper">
+        <div class="navigation">
+            <div class="navigation_inner"><h3>Position image</h3><% if(show_cancel) { %>
+                <button class="chrome big black cancel_header_position" type="button">Cancel</button>
+                <% } %>
+                <button class="chrome big save_header_position" type="button">Done</button>
+            </div>
+        </div>
+        <div class="header_zoom"><span class="zoom_in"></span>
+            <div class="zoom_control"></div>
+            <span class="zoom_out"></span></div>
+        <div class="full_image_wrapper">
+            <div class="Knight-Rider-loader loader centered">
+                <div class="Knight-Rider-bar" style="background-color:<%- loader_color %>"></div>
+                <div class="Knight-Rider-bar" style="background-color:<%- loader_color %>"></div>
+                <div class="Knight-Rider-bar" style="background-color:<%- loader_color %>"></div>
+            </div>
+            <div class="full_image" style="background-image: url(<%- image %>)"></div>
+        </div></div></script>
+<script id="tumblelog_header_info_popover_template" type="text/template">
+    <div
+            class="info_popover popover popover_gradient">
+        <div class="popover_inner">
+            <ul class="popover_options"><% if (!show_user_controls) { %><% if (typeof asks === 'boolean' && asks === true) {
+                %>
+                <li class="ask_menu_item"><a href="<%- url %>/ask">Ask a question</a></li>
+                <% } %><% if (typeof can_receive_messages === 'boolean' && can_receive_messages === true) { %>
+                <li class="messaging_menu_item"><a href="#">Send a message</a></li>
+                <% } else { %>
+                <li class="fan_mail_menu_item"><a href="/send/<%- name %>">Send fan mail</a></li>
+                <% } %><% } else { %><% if (typeof can_receive_messages === 'boolean' && can_receive_messages === false) {
+                %><% if (typeof asks === 'boolean' && asks === true){ %>
+                <li class="ask_menu_item"><a href="<%- url %>/ask">Ask a question</a></li>
+                <% } %>
+                <li class="fan_mail_menu_item"><a href="/send/<%- name %>">Send fan mail</a></li>
+                <% } %><% } %>
+                <li class="archive_menu_item"><a href="<%- url %>/archive" target="_blank">Archive</a></li>
+                <% if(typeof likes === 'boolean' && likes === true) { %>
+                <li><a href="https://www.tumblr.com/liked/by/<%- name %>" target="_blank">Likes</a></li>
+                <% } %><% if(typeof share_following === 'boolean' && share_following === true) { %>
+                <li><a href="https://www.tumblr.com/followed/by/<%- name %>" target="_blank">Following</a></li>
+                <% } %>
+                <li data-flag-subscribed-item class="toggle-subscription <%- subscriptionStatus %>"><a href="#"><span
+                        class="unsubscribe">Stop notifications</span><span class="subscribe">Get notifications</span></a>
+                    <div class="help-slidedown"></div>
+                </li>
+                <li class="web-subscribe-how-to"><span class="copy-howto">
+                        We’ll ding your phone whenever this Tumblr posts. (<a class="app-link" target="_blank"
+                                                                              href="/apps">You’ll want the app</a>.)                    </span>
+                </li>
+                <% if (show_flag_button) { %>
+                <li class="flag_menu_item"><a href="#">Report</a></li>
+                <% } %>
+                <li><a class="unblock" href="#">Unblock</a></li>
+                <li><a class="block" href="#">Block</a></li>
+            </ul>
+        </div></div></script>
+<script id="tumblelog_header_avatar_popover_template" type="text/template">
+    <div
+            class="popover popover_gradient nipple_on_left">
+        <div class="avatar_popover popover_inner">
+            <ul class="popover_options">
+                <li><a class="choose_photo"><i class="icon icon_view_grid_settings"/>Choose a photo</a></li>
+                <li><label class="binary_switch right"><input name="tumblelog_show_avatar" id="tumblelog_show_avatar"
+                                                              type="checkbox"<% if(global_theme_params.show_avatar){ print('
+                    checked') } %> /><span class="binary_switch_track"></span><span
+                            class="binary_switch_button"></span></label><label for="tumblelog_show_avatar">Show
+                    avatar</label></li>
+                <li class="avatar_shape_options">
+                    <div class="styles right"><a
+                            class="avatar_shape square<% if(global_theme_params.avatar_shape === 'square'){ print(" selected")
+                        } %>" data-value="square"></a><a
+                                class="avatar_shape circle<% if(global_theme_params.avatar_shape === 'circle'){ print("
+                                selected") } %>" data-value="circle"></a></div>
+                    <label for="tumblelog_avatar_shape">Shape</label></li>
+            </ul>
+        </div></div></script>
+<script id="tumblelog_header_title_popover_template" type="text/template">
+    <div
+            class="popover popover_gradient nipple_on_bottom">
+        <div class="title_popover popover_inner">
+            <ul class="popover_options">
+                <li><label class="binary_switch right"><input name="tumblelog_show_title" id="tumblelog_show_title"
+                                                              type="checkbox"<% if(global_theme_params.show_title){ print('
+                    checked') } %> /><span class="binary_switch_track"></span><span
+                            class="binary_switch_button"></span></label><label for="tumblelog_show_title">Show title</label>
+                </li>
+                <li>
+                    <div class="right">
+                        <div class="font_dropdown"><% if(current_font) { %>
+                            <div class="current_font"
+                                 style="font-family:<%- current_font.family %>; font-weight:<%- global_theme_params.title_font_weight %>;">
+                                <span><%- current_font.display_name %></span><i class="icon icon_arrow_carrot_down"/></div>
+                            <% } %>
+                        </div>
+                        <div class="font_weight_wrapper"><% if(global_theme_params.title_font_weight === "bold") { %><span
+                                class="font_weight on"></span><% } else { %><span class="font_weight"></span><% } %>
+                        </div>
+                    </div>
+                    <span class="label">Font</span></li>
+            </ul>
+        </div></div></script>
+<script id="tumblelog_header_description_popover_template" type="text/template">
+    <div
+            class="popover popover_gradient nipple_on_bottom">
+        <div class="description_popover popover_inner">
+            <ul class="popover_options">
+                <li><label class="binary_switch right"><input name="tumblelog_show_description"
+                                                              id="tumblelog_show_description" type="checkbox"<%
+                    if(global_theme_params.show_description){ print(' checked') } %> /><span
+                            class="binary_switch_track"></span><span class="binary_switch_button"></span></label><label
+                        for="tumblelog_show_description">Show description</label></li>
+            </ul>
+        </div></div></script>
+<script id="tumblelog_header_image_popover_template" type="text/template">
+    <div
+            class="popover popover_gradient nipple_on_right">
+        <div class="header_image_popover popover_inner">
+            <ul class="popover_options">
+                <li><a class="choose_photo"><i class="icon icon_view_grid_settings"/>Choose a photo</a></li>
+                <li><a class="position_photo"><i class="icon icon_reposition"/>Reposition</a></li>
+                <li><label class="binary_switch right"><input name="tumblelog_stretch_header_image"
+                                                              id="tumblelog_stretch_header_image" type="checkbox"<%
+                    if(global_theme_params.header_stretch){ print(' checked') } %> /><span
+                            class="binary_switch_track"></span><span class="binary_switch_button"></span></label><label
+                        for="tumblelog_stretch_header_image">Stretch header image</label></li>
+                <li><label class="binary_switch right"><input name="tumblelog_show_header_image"
+                                                              id="tumblelog_show_header_image" type="checkbox"<%
+                    if(global_theme_params.show_header_image){ print(' checked') } %> /><span
+                            class="binary_switch_track"></span><span class="binary_switch_button"></span></label><label
+                        for="tumblelog_show_header_image">Show header image</label></li>
+            </ul>
+        </div></div></script>
+<script id="tumblelog_header_color_popover_template" type="text/template">
+    <div
+            class="popover popover_gradient nipple_on_bottom">
+        <div class="popover_inner"></div></div></script>
+<script id="tumblelog_header_share_popover_template" type="text/template">
+    <div
+            class="popover popover_menu popover_gradient popover_share_social">
+        <div class="popover_inner">
+            <ul class="share_options active">
+                <li class="share_email popover_menu_item"><a class="popover_menu_item_anchor" href="#">Email</a></li>
+                <li class="share_facebook popover_menu_item"><a class="popover_menu_item_anchor" href="#">Facebook</a></li>
+                <li class="share_twitter popover_menu_item"><a class="popover_menu_item_anchor" href="#">Twitter</a></li>
+            </ul>
+            <form method="post" class="share_form email_form" id="share_email" novalidate>
+                <div class="form_wrapper">
+                    <div class="input_group">
+                        <ul>
+                            <li><input type="email" class="email_address" name="email_address" maxlength="100"
+                                       placeholder="Email" title="Email"><span class="cancel icon_close"></span></li>
+                            <li><textarea name="message" class="share_message" maxlength="255"
+                                          placeholder="Message (Optional)" title="Message (Optional)"></textarea></li>
+                        </ul>
+                    </div>
+                    <div class="reply_to">
+                        <div class="menu_item_option"><label class="binary_switch"><input type="checkbox"
+                                                                                          id="allow_reply_to"
+                                                                                          class="reply_to_input"
+                                                                                          name="allow_reply_to"><span
+                                class="binary_switch_track"></span><span class="binary_switch_button"></span></label></div>
+                        <label class="menu_item_label" for="allow_reply_to">
+                            Let them reply to <span class="reply_to_email">duncan.sterken123@gmail.com</span> </label></div>
+                    <div class="error_status"></div>
+                    <button type="submit" class="chrome blue email_submit" data-label-sending="Sending..." data-label="Send"
+                            disabled>Send
+                    </button>
+                </div>
+            </form>
+            <div class="status" data-sent="Sent!" data-error="Oops! Something went wrong."><span class="status_message">Sent!</span>
+            </div>
+        </div></div></script>
+<script id="post_moderation_popover_template" type="text/template">
+    <div
+            class="popover popover_gradient moderation_popover">
+        <div class="popover_inner">
+            <div class="popover_header no_nipple">
+                Report this post <a class="moderation_help_link"
+                                    href="https://www.tumblr.com/docs/discovery#moderationheader" target="_blank"><span
+                    class="icon_help"></span></a></div>
+            <form class="popover_form" action="/svc/flag" method="POST"><input type="hidden" name="tumblelog_name"
+                                                                               value="<%- tumblelog_name %>"/><input
+                    type="hidden" name="post_id" value="<%- post_id %>"/><input type="hidden" name="root_id"
+                                                                                value="<%- root_id %>"/>
+                <div class="popover_form_row explicit"><input type="radio" name="flag"
+                                                              class="flag_explicit moderation_input" id="flag_explicit"
+                                                              value="nsfw"/><label for="flag_explicit">Report sensitive
+                    content</label>
+                    <div class="popover_form_row_help">
+                        Adult-oriented content is currently being hidden ( <i class="icon_lock_thick_12"></i> ) but this
+                        post still showed up.
+                    </div>
+                </div>
+                <div class="popover_form_row spam"><input type="radio" name="flag" class="flag_spam moderation_input"
+                                                          id="flag_spam" value="spam"/><label for="flag_spam">Report
+                    spam</label></div>
+                <div class="popover_form_row general"><input type="radio" name="flag" class="flag_general moderation_input"
+                                                             id="flag_general" value="general"/><label for="flag_general">
+                    Report something else </label></div>
+                <div class="violation_types_wrapper">
+                    <div class="popover_form_row"><input type="radio" name="violation" id="violation_speech"
+                                                         class="moderation_input" value="hate"/><label
+                            for="violation_speech">Hate speech</label></div>
+                    <div class="popover_form_row"><input type="radio" name="violation" id="violation_minors"
+                                                         class="moderation_input" value="minors"/><label
+                            for="violation_minors">Harm to minors</label></div>
+                    <div class="popover_form_row"><input type="radio" name="violation" id="violation_selfharm"
+                                                         class="moderation_input" value="selfharm"/><label
+                            for="violation_selfharm">Promotion or glorification of self-harm</label></div>
+                    <div class="popover_form_row"><input type="radio" name="violation" id="violation_gore"
+                                                         class="moderation_input" value="gore"/><label for="violation_gore">Gore,
+                        mutilation, or bestiality</label></div>
+                    <div class="popover_form_row"><input type="radio" name="violation" id="violation_attribution"
+                                                         class="moderation_input" value="attribution"/><label
+                            for="violation_attribution">Misattribution or non-attribution</label></div>
+                    <div class="popover_form_row"><input type="radio" name="violation" id="violation_impersonation"
+                                                         class="moderation_input" value="impersonation"/><label
+                            for="violation_impersonation">Confusion or impersonation</label></div>
+                    <div class="popover_form_row"><input type="radio" name="violation" id="violation_harassment"
+                                                         class="moderation_input" value="harassment"/><label
+                            for="violation_harassment">Harassment</label></div>
+                </div>
+                <div class="popover_form_row ignore"><label class="binary_switch"><input type="checkbox" name="flag_ignore"
+                                                                                         class="flag_ignore"
+                                                                                         id="flag_ignore" checked><span
+                        class="binary_switch_track"></span><span class="binary_switch_button"></span></label><label
+                        class="ignore_name" for="flag_ignore">
+                    Ignore <%- tumblelog_name %> </label></div>
+                <button class="chrome red full_width submit_flag">Report</button>
+            </form>
+        </div></div></script>
+<script id="tumblelog_header_inline_styles" type="text/template">
+    <style id="indash_blog_styles"><%
+    var link_color = String(global_theme_params.link_color).toUpperCase();
+    var link_border_color = (link_color === '#FFF' || link_color === '#FFFFFF') ? '#F5F5F5' : link_color;
+    var link_text_color = (typeof link_font_color !== 'undefined') ? link_font_color : '#FFF';
+    var header_color = (typeof header_override_color !== 'undefined') ? header_override_color : link_color;
+    %>
+     .tumblelog_name_<%- name %>.indash_header_wrapper.no_header_image .navigation h3,
+                               .tumblelog_name_<%- name %>.indash_header_wrapper.no_stretch_header .navigation h3 {
+                                                             color: <%- header_color %>;
+                                                         }
+
+    .tumblelog_name_<%- name %>.indash_header_wrapper.no_header_image .navigation .nav_icon,
+                              .tumblelog_name_<%- name %>.indash_header_wrapper.no_stretch_header .navigation .nav_icon,
+                                                        .tumblelog_name_<%- name %>.indash_header_wrapper.no_stretch_header .navigation .blog-search-input,
+                                                                                  .tumblelog_name_<%- name %>.indash_header_wrapper.no_header_image .navigation .blog-search-input {
+                                                                                                                color: <%- header_color %>;
+                                                                                                            }
+
+    .tumblelog_name_<%- name %>.indash_header_wrapper.no_header_image .navigation .blog-search-input::-webkit-input-placeholder {
+                                  color: <%- header_color %>;
+                                  opacity: 0.7;
+                              }
+    .tumblelog_name_<%- name %>.indash_header_wrapper.no_header_image .navigation .blog-search-input::-moz-placeholder {
+                                  color: <%- header_color %>;
+                                  opacity: 0.7;
+                              }
+    .tumblelog_name_<%- name %>.indash_header_wrapper.no_header_image .navigation .blog-search-input:-moz-placeholder {
+                                  color: <%- header_color %>;
+                                  opacity: 0.7;
+                              }
+    .tumblelog_name_<%- name %>.indash_header_wrapper.no_header_image .navigation .blog-search-input:-ms-input-placeholder {
+                                  color: <%- header_color %>;
+                                  opacity: 0.7;
+                              }
+
+    .tumblelog_name_<%- name %>.indash_header_wrapper.no_header_image .navigation button,
+                              .tumblelog_name_<%- name %>.indash_header_wrapper.no_stretch_header .navigation button {
+                                                            color:  <%- global_theme_params.background_color %>;
+                                                            background-color: <%- header_color %>;
+                                                        }
+
+    .tumblelog_name_<%- name %>.indash_header_wrapper .description a {
+                                  color: <%- global_theme_params.link_color %>;
+                              }
+
+    .post[data-tumblelog-name="<%- name %>"] .post_permalink {
+        border-color: <%- global_theme_params.background_color %> <%- global_theme_params.background_color %> transparent transparent;
+        box-shadow: 2px 0px 0px <%- global_theme_params.background_color %>, 0px -2px 0px <%- global_theme_params.background_color %>;
+    }
+
+    .indash_blog .show_more_posts {
+        background-color: <%- link_color %>;
+        border-color: <%- link_border_color %>;
+        color: <%- link_text_color %>;
+    }
+
+    /*
+    KEEP THIS HERE!
+    Firefox won't render the filter unless it's inline.
+    */
+    .tumblelog_name_<%- name %>.indash_header_wrapper .navigation_bg .sticky_header_image {
+                                  -webkit-filter: blur(10px);
+                                  filter: url('#blur');
+                              }
+    .tumblelog_name_<%- name %>.indash_blog_effects {
+                                  height: 1px;
+                                  left: -9999px;
+                                  position: absolute;
+                                  top: -9999px;
+                                  width: 1px;
+                              }
+    </style>
+    <svg class
+
+                 =
+                 "tumblelog_name_<%- name %> indash_blog_effects"
+         version
+
+                 =
+                 "1.1"
+         xmlns
+
+                 =
+                 "http://www.w3.org/2000/svg"
+         xmlns:xlink
+
+                 =
+                 "http://www.w3.org/1999/xlink"
+         xmlns:sketch
+
+                 =
+                 "http://www.bohemiancoding.com/sketch/ns"
+    > < filter id
+
+        =
+        "blur"
+        > < feGaussianBlur stdDeviation
+
+        =
+        "10"
+        /
+        > <
+
+        /
+        filter > <
+
+        /
+        svg >
+</script>
+<script id="tumblelog_header_template" type="text/template"><%
+// Checks if this is being rendered for the legacy popover
+var is_popover = (typeof popover === 'boolean') ? popover : false;
+// Checks if this is being rendered for the blog cards in Search
+var is_search_blog_card = (typeof search_blog_card === 'boolean') ? search_blog_card : false;
+var is_sponsored = (typeof sponsored === 'boolean') ? sponsored : false;
+
+var body_context = is_popover ? "AYwEbVwDAAj96g" : "AYwEbVwDAAn96g";
+var header_context = is_popover ? "AYwEbVwDAAj96Q" : "AYwEbVwDAAn96Q";
+var has_avatar = (avatar_url && global_theme_params.show_avatar);
+var has_bg_img = (global_theme_params.header_image_focused && global_theme_params.show_header_image);
+var has_title = (title && global_theme_params.show_title);
+var has_description = (description_sanitized && global_theme_params.show_description);
+
+// Hide the header image if the blog card is a popover/search blog card and the image is default
+var hide_default_header = (is_popover || is_search_blog_card) ? has_default_header && hide_headers_flag : false;
+
+var expanded_name = (cname) ? cname : name + ".tumblr.com";
+var description_color = (title_color_rgb) ? 'rgba(' + title_color_rgb + ',0.7)' : global_theme_params.title_color;
+var is_tumblelog_nsfw = (typeof nsfw === 'boolean') ? nsfw : false;
+var show_edit_appearance = true;
+var header_class = (global_theme_params.header_stretch) ? '' : ' no_stretch_header';
+header_class += (has_bg_img && !hide_default_header) ? '' : ' no_header_image';
+header_class += (has_avatar) ? '' : ' no_avatar';
+header_class += ((has_bg_img && !hide_default_header) && !has_avatar && !has_title && !has_description) ? ' header_image_only' : '';
+header_class += (has_title || has_description) ? ' has_info' : ' no_info';
+
+var show_peepr = (typeof has_peepr_header === 'boolean') ? has_peepr_header : true;
+%>
+<div class="indash_header_wrapper <%- header_class %> tumblelog_name_<%- name %>"
+     style="background-color:<%- global_theme_params.background_color %>; color:<%- global_theme_params.title_color %>"
+     data-context-path="<%- body_context %>"
+><% if (show_navigation) { %>
+    <div class="navigation">
+        <div class="navigation_bg" style="background-color: <%- global_theme_params.background_color %>"></div>
+        <div class="navigation_inner" data-context-path="<%- header_context %>"><% if (show_dismiss_controls) { %><% }
+            %><% if(name !== 'undefined') { %><h3><a href="<%- url %>" target="_blank"
+                                                     class="blog_name <% if (is_verified) { %> verified_badge_<%- badge_type %><% } %>"
+                <% if (show_peepr) { %>data-peepr='{"tumblelog":"<%- name %>"}'<% } %> rel="noopener"><%
+                if (is_verified) {
+
+                switch(badge_type) {
+                case 'normal':
+                %><i class="icon_verified_badge"></i><%
+                break;
+                case 'official':
+                %><span class="verified-label"><i class="icon_verified_badge"></i><span
+                        class="verified-text">Official</span></span><%
+                break;
+                }
+                }
+                %><span class="name"><% if (show_dismiss_controls) { %><span
+                        class="pre_name_text">Here&#039;s a blog: </span><% } %><%- name %></span><span
+                        class="full_url"><% if (show_dismiss_controls) { %><span class="pre_name_text">Here&#039;s a blog: </span><% } %><%- expanded_name %></span></a>
+            </h3><% } %>
+            <div class="header_controls"><% if (show_share_controls) { %><a
+                    class="open_blog_button nav_icon icon_export"></a><% } %><% if (!is_popover && customizable &&
+                show_edit_appearance) { %>
+                <button class="chrome big customize_button" type="button" data-blog-name="<%- name %>"
+                        data-blog-url="<%- url %>" data-settings-url="/settings/blog/<%- name %>">Edit appearance
+                </button>
+                <% } %><% if (!customizable && show_user_controls) { %><a data-snowman-container
+                                                                          class="info_popover_button nav_icon user_dropdown_lockup"><i
+                        class="user_dropdown_icon user_dropdown_icon_user icon_user_settings"></i></a><% } %><%
+                if(!is_popover && is_sponsored) { %>
+                <div class="sponsored_badge_container">
+                    <div class="sponsored_label">Sponsored</div>
+                    <div class="sponsored_badge mini light"><a href="/sponsors" class="sponsored_badge_icon"
+                                                               target="_blank"><span class="dollar_sign">$</span><span
+                            class="ring"></span></a></div>
+                </div>
+                <% } %><% if (!customizable && show_follow_button) { %><% if(following) { %>
+                <button class="chrome unfollow" type="button">Unfollow</button>
+                <button class="chrome follow" type="button" style="display:none;">Follow</button>
+                <% } else { %>
+                <button class="chrome unfollow" type="button" style="display:none;">Unfollow</button>
+                <button class="chrome follow" type="button">Follow</button>
+                <% } %><% } %>
+            </div>
+        </div>
+    </div>
+    <% } %><% if(global_theme_params.header_image_focused && global_theme_params.show_header_image &&
+    !hide_default_header) { %>
+    <div class="header_image_wrapper<% if(has_avatar) { %> has_avatar<% } %>">
+        <div class="header_image" style="background-image:url(<%- global_theme_params.header_image_focused %>)"><a
+                href="<%- url %>" target="_blank" rel="noopener" <% if (show_peepr) { %>data-peepr='{"tumblelog":"<%-
+            name %>"}'<% } %>><img src="<%- global_theme_params.header_image_focused %>" alt="<%- title %>"/></a></div>
+    </div>
+    <% } %><% if(avatar_url && global_theme_params.show_avatar) { %>
+    <div class="avatar <%- global_theme_params.avatar_shape %>"
+         style="background-color:<%- global_theme_params.background_color %>; background-image:url(<%- avatar_url %>); color:<%- global_theme_params.background_color %>;">
+        <a href="<%- url %>" target="_blank" rel="noopener" <% if (show_peepr) { %>data-peepr='{"tumblelog":"<%- name
+        %>"}'<% } %>><% if (can_pixelate_avatar) { %>
+        <canvas
+                class='post-activity-avatar-image post_sub_avatar_image pixelated-avatar needs-drawing hide <%- global_theme_params.avatar_shape %>'
+                data-image-url='<%- avatar_url %>'
+                width="64"
+                height="64"
+                alt='<%- title %>'/>
+        <% } else { %><img src="<%- avatar_url %>" alt="<%- title %>"/><% } %></a></div>
+    <% } %><% if(has_title || has_description) { %>
+    <div class="info_wrapper">
+        <div class="info"><% if(has_title) { %><h1 class="title"
+                                                   style="font-family:<%- title_font_family || 'inherit' %>; font-weight:<%- global_theme_params.title_font_weight %>;">
+            <%- title %></h1><% } %><% if(has_description) { %>
+            <div class="description" style="color:<%- description_color %>">
+                <div class="description_inner"><%= description_sanitized %></div>
+            </div>
+            <% } %>
+        </div>
+    </div>
+    <% } %>
+</div></script>
+<script id="tumblelog_header_customize_template" type="text/template"><%
+var stretch_header_class = (global_theme_params.header_stretch) ? '' : 'no_stretch_header';
+var description_color = (title_color_rgb) ? 'rgba(' + title_color_rgb + ',0.7)' : global_theme_params.title_color;
+var filetype_error = "That&#039;s not even an image...";
+var filetype_ok = "I am sorry";
+var filesize_error = "That's too big!<br/>Try making it 10 MB or less.";
+var filesize_ok = "Fine";
+%>
+<div class="indash_header_wrapper customize <%- stretch_header_class %>"
+     style="background-color:<%- global_theme_params.background_color %>; color:<%- global_theme_params.title_color %>;">
+    <div class="navigation">
+        <div class="navigation_inner"><h3>Edit appearance</h3>
+            <button class="chrome big black cancel_button" type="button">Cancel</button>
+            <button class="chrome big save_button" type="button" data-error="Woops :(" data-error-confirm="Ok"><span
+                    class="label">Save</span><span class="Knight-Rider-loader loader"><span
+                    class="Knight-Rider-bar"></span><span class="Knight-Rider-bar"></span><span
+                    class="Knight-Rider-bar"></span></span></button>
+        </div>
+    </div>
+    <div class="header_image"
+         style="background-image:url(<%- global_theme_params.header_image_focused %>); color:<%- global_theme_params.background_color %>;">
+        <img src="<%- global_theme_params.header_image %>" alt=""/>
+        <div class="off_overlay customize_overlay"></div>
+        <div class="header_dropzone customize_overlay" style="background-color:<%- global_theme_params.title_color %>">
+            <input id="tumblelog_header_image" data-filetype-ok="<%- filetype_ok %>"
+                   data-filetype-error="<%- filetype_error %>" data-filesize-ok="<%- filesize_ok %>"
+                   data-filesize-error="<%- filesize_error %>" name="photo" class="customize_overlay" type="file"
+                   accept="image/*"/></div>
+        <div class="header_image_glass customize_overlay"></div>
+        <button class="edit_header_image edit_button" type="button" title="Edit header image options"><i
+                class="icon icon_edit_pencil"></i></button>
+    </div>
+    <div class="avatar <%- (global_theme_params.avatar_shape === 'circle') ? 'circle' : 'square' %>"
+         style="background-image:url(<%- avatar_url %>); color:<%- global_theme_params.background_color %>;">
+        <div class="off_overlay customize_overlay"></div>
+        <div class="header_dropzone customize_overlay" style="background-color:<%- global_theme_params.title_color %>">
+            <input id="tumblelog_avatar_url" data-filetype-ok="<%- filetype_ok %>"
+                   data-filetype-error="<%- filetype_error %>" data-filesize-ok="<%- filesize_ok %>"
+                   data-filesize-error="<%- filesize_error %>" name="photo" class="customize_overlay" type="file"
+                   accept="image/*"/></div>
+        <button class="edit_avatar edit_button" type="button" title="Edit avatar options"><i
+                class="icon icon_edit_pencil"></i></button>
+    </div>
+    <div class="info"><h1 class="title"><span class="editable_text" data-placeholder="Title"
+                                              style="border-color:<%- global_theme_params.link_color %>; font-family:<%- title_font_family || 'inherit' %>; font-weight:<%- global_theme_params.title_font_weight %>;"><%- title %></span>
+    </h1>
+        <div class="description" style="color:<%- description_color %>"><span class="editable_text"
+                                                                              data-placeholder="Description"
+                                                                              style="border-color:<%- global_theme_params.link_color %>"><%- description %></span>
+        </div>
+    </div>
+    <div class="global_options">
+        <div class="link_color option"><i class="color_dot"
+                                          style="background-color:<%- global_theme_params.link_color %>"></i><span
+                class="option_label">Accent</span></div>
+        <div class="background_color option"><i class="color_dot"
+                                                style="background-color:<%- global_theme_params.background_color %>"></i><span
+                class="option_label">Background</span></div>
+    </div>
+    <div id="indash_header_overlay"></div>
+</div></script>
+<script id="tumblelog_header_position_template" type="text/template">
+    <div
+            class="indash_header_position_wrapper">
+        <div class="navigation">
+            <div class="navigation_inner"><h3>Position image</h3><% if(show_cancel) { %>
+                <button class="chrome big black cancel_header_position" type="button">Cancel</button>
+                <% } %>
+                <button class="chrome big save_header_position" type="button">Done</button>
+            </div>
+        </div>
+        <div class="header_zoom"><span class="zoom_in"></span>
+            <div class="zoom_control"></div>
+            <span class="zoom_out"></span></div>
+        <div class="full_image_wrapper">
+            <div class="Knight-Rider-loader loader centered">
+                <div class="Knight-Rider-bar" style="background-color:<%- loader_color %>"></div>
+                <div class="Knight-Rider-bar" style="background-color:<%- loader_color %>"></div>
+                <div class="Knight-Rider-bar" style="background-color:<%- loader_color %>"></div>
+            </div>
+            <div class="full_image" style="background-image: url(<%- image %>)"></div>
+        </div></div></script>
+<script id="tumblelog_header_info_popover_template" type="text/template">
+    <div
+            class="info_popover popover popover_gradient">
+        <div class="popover_inner">
+            <ul class="popover_options"><% if (!show_user_controls) { %><% if (typeof asks === 'boolean' && asks === true) {
+                %>
+                <li class="ask_menu_item"><a href="<%- url %>/ask">Ask a question</a></li>
+                <% } %><% if (typeof can_receive_messages === 'boolean' && can_receive_messages === true) { %>
+                <li class="messaging_menu_item"><a href="#">Send a message</a></li>
+                <% } else { %>
+                <li class="fan_mail_menu_item"><a href="/send/<%- name %>">Send fan mail</a></li>
+                <% } %><% } else { %><% if (typeof can_receive_messages === 'boolean' && can_receive_messages === false) {
+                %><% if (typeof asks === 'boolean' && asks === true){ %>
+                <li class="ask_menu_item"><a href="<%- url %>/ask">Ask a question</a></li>
+                <% } %>
+                <li class="fan_mail_menu_item"><a href="/send/<%- name %>">Send fan mail</a></li>
+                <% } %><% } %>
+                <li class="archive_menu_item"><a href="<%- url %>/archive" target="_blank">Archive</a></li>
+                <% if(typeof likes === 'boolean' && likes === true) { %>
+                <li><a href="https://www.tumblr.com/liked/by/<%- name %>" target="_blank">Likes</a></li>
+                <% } %><% if(typeof share_following === 'boolean' && share_following === true) { %>
+                <li><a href="https://www.tumblr.com/followed/by/<%- name %>" target="_blank">Following</a></li>
+                <% } %>
+                <li data-flag-subscribed-item class="toggle-subscription <%- subscriptionStatus %>"><a href="#"><span
+                        class="unsubscribe">Stop notifications</span><span class="subscribe">Get notifications</span></a>
+                    <div class="help-slidedown"></div>
+                </li>
+                <li class="web-subscribe-how-to"><span class="copy-howto">
+                        We’ll ding your phone whenever this Tumblr posts. (<a class="app-link" target="_blank"
+                                                                              href="/apps">You’ll want the app</a>.)                    </span>
+                </li>
+                <% if (show_flag_button) { %>
+                <li class="flag_menu_item"><a href="#">Report</a></li>
+                <% } %>
+                <li><a class="unblock" href="#">Unblock</a></li>
+                <li><a class="block" href="#">Block</a></li>
+            </ul>
+        </div></div></script>
+<script id="tumblelog_header_avatar_popover_template" type="text/template">
+    <div
+            class="popover popover_gradient nipple_on_left">
+        <div class="avatar_popover popover_inner">
+            <ul class="popover_options">
+                <li><a class="choose_photo"><i class="icon icon_view_grid_settings"/>Choose a photo</a></li>
+                <li><label class="binary_switch right"><input name="tumblelog_show_avatar" id="tumblelog_show_avatar"
+                                                              type="checkbox"<% if(global_theme_params.show_avatar){ print('
+                    checked') } %> /><span class="binary_switch_track"></span><span
+                            class="binary_switch_button"></span></label><label for="tumblelog_show_avatar">Show
+                    avatar</label></li>
+                <li class="avatar_shape_options">
+                    <div class="styles right"><a
+                            class="avatar_shape square<% if(global_theme_params.avatar_shape === 'square'){ print(" selected")
+                        } %>" data-value="square"></a><a
+                                class="avatar_shape circle<% if(global_theme_params.avatar_shape === 'circle'){ print("
+                                selected") } %>" data-value="circle"></a></div>
+                    <label for="tumblelog_avatar_shape">Shape</label></li>
+            </ul>
+        </div></div></script>
+<script id="tumblelog_header_title_popover_template" type="text/template">
+    <div
+            class="popover popover_gradient nipple_on_bottom">
+        <div class="title_popover popover_inner">
+            <ul class="popover_options">
+                <li><label class="binary_switch right"><input name="tumblelog_show_title" id="tumblelog_show_title"
+                                                              type="checkbox"<% if(global_theme_params.show_title){ print('
+                    checked') } %> /><span class="binary_switch_track"></span><span
+                            class="binary_switch_button"></span></label><label for="tumblelog_show_title">Show title</label>
+                </li>
+                <li>
+                    <div class="right">
+                        <div class="font_dropdown"><% if(current_font) { %>
+                            <div class="current_font"
+                                 style="font-family:<%- current_font.family %>; font-weight:<%- global_theme_params.title_font_weight %>;">
+                                <span><%- current_font.display_name %></span><i class="icon icon_arrow_carrot_down"/></div>
+                            <% } %>
+                        </div>
+                        <div class="font_weight_wrapper"><% if(global_theme_params.title_font_weight === "bold") { %><span
+                                class="font_weight on"></span><% } else { %><span class="font_weight"></span><% } %>
+                        </div>
+                    </div>
+                    <span class="label">Font</span></li>
+            </ul>
+        </div></div></script>
+<script id="tumblelog_header_description_popover_template" type="text/template">
+    <div
+            class="popover popover_gradient nipple_on_bottom">
+        <div class="description_popover popover_inner">
+            <ul class="popover_options">
+                <li><label class="binary_switch right"><input name="tumblelog_show_description"
+                                                              id="tumblelog_show_description" type="checkbox"<%
+                    if(global_theme_params.show_description){ print(' checked') } %> /><span
+                            class="binary_switch_track"></span><span class="binary_switch_button"></span></label><label
+                        for="tumblelog_show_description">Show description</label></li>
+            </ul>
+        </div></div></script>
+<script id="tumblelog_header_image_popover_template" type="text/template">
+    <div
+            class="popover popover_gradient nipple_on_right">
+        <div class="header_image_popover popover_inner">
+            <ul class="popover_options">
+                <li><a class="choose_photo"><i class="icon icon_view_grid_settings"/>Choose a photo</a></li>
+                <li><a class="position_photo"><i class="icon icon_reposition"/>Reposition</a></li>
+                <li><label class="binary_switch right"><input name="tumblelog_stretch_header_image"
+                                                              id="tumblelog_stretch_header_image" type="checkbox"<%
+                    if(global_theme_params.header_stretch){ print(' checked') } %> /><span
+                            class="binary_switch_track"></span><span class="binary_switch_button"></span></label><label
+                        for="tumblelog_stretch_header_image">Stretch header image</label></li>
+                <li><label class="binary_switch right"><input name="tumblelog_show_header_image"
+                                                              id="tumblelog_show_header_image" type="checkbox"<%
+                    if(global_theme_params.show_header_image){ print(' checked') } %> /><span
+                            class="binary_switch_track"></span><span class="binary_switch_button"></span></label><label
+                        for="tumblelog_show_header_image">Show header image</label></li>
+            </ul>
+        </div></div></script>
+<script id="tumblelog_header_color_popover_template" type="text/template">
+    <div
+            class="popover popover_gradient nipple_on_bottom">
+        <div class="popover_inner"></div></div></script>
+<script id="tumblelog_header_share_popover_template" type="text/template">
+    <div
+            class="popover popover_menu popover_gradient popover_share_social">
+        <div class="popover_inner">
+            <ul class="share_options active">
+                <li class="share_email popover_menu_item"><a class="popover_menu_item_anchor" href="#">Email</a></li>
+                <li class="share_facebook popover_menu_item"><a class="popover_menu_item_anchor" href="#">Facebook</a></li>
+                <li class="share_twitter popover_menu_item"><a class="popover_menu_item_anchor" href="#">Twitter</a></li>
+            </ul>
+            <form method="post" class="share_form email_form" id="share_email" novalidate>
+                <div class="form_wrapper">
+                    <div class="input_group">
+                        <ul>
+                            <li><input type="email" class="email_address" name="email_address" maxlength="100"
+                                       placeholder="Email" title="Email"><span class="cancel icon_close"></span></li>
+                            <li><textarea name="message" class="share_message" maxlength="255"
+                                          placeholder="Message (Optional)" title="Message (Optional)"></textarea></li>
+                        </ul>
+                    </div>
+                    <div class="reply_to">
+                        <div class="menu_item_option"><label class="binary_switch"><input type="checkbox"
+                                                                                          id="allow_reply_to"
+                                                                                          class="reply_to_input"
+                                                                                          name="allow_reply_to"><span
+                                class="binary_switch_track"></span><span class="binary_switch_button"></span></label></div>
+                        <label class="menu_item_label" for="allow_reply_to">
+                            Let them reply to <span class="reply_to_email">duncan.sterken123@gmail.com</span> </label></div>
+                    <div class="error_status"></div>
+                    <button type="submit" class="chrome blue email_submit" data-label-sending="Sending..." data-label="Send"
+                            disabled>Send
+                    </button>
+                </div>
+            </form>
+            <div class="status" data-sent="Sent!" data-error="Oops! Something went wrong."><span class="status_message">Sent!</span>
+            </div>
+        </div></div></script>
+<script id="indash_blog_post_template"
+        type="text/template"><% var hasTagFiltering = isTagFilteringEnabled && typeof model.filtered !== 'undefined' && !_.isEmpty(model.filtered); %><%
+var hasProjectXcover = false;
+var hasSafeModeCover = false;
+var hasTagFilteringCover = false;
+%>
+<div class="post_wrapper post_chrome <%- model.type %>" data-post-id="<%- model.id %>">
+    <div class="post_header post_info clearfix"><% if (typeof model.reblogged_from_advertiser_name !== 'undefined') { %>
+        <p class="reblog_info <%- (safeMode && model.is_nsfw_based_on_score) ? '' : 'post_info_link' %>"><span
+                class="reblog_icon"></span> <%- model.reblogged_from_advertiser_name %></p><% } else if (typeof
+        model.reblogged_from_name !== 'undefined') { %><a
+                class="reblog_info <%- (safeMode && model.is_nsfw_based_on_score) ? '' : 'post_info_link' %>"
+                href="<%- model.reblogged_from_tumblr_url %>" data-tumblelog-name="<%- model.reblogged_from_name %>"
+                rel="noopener"
+                data-peepr='{"tumblelog":"<%- model.reblogged_from_name %>", "postId":"<%- model.reblogged_from_id %>"}'><span
+                class="reblog_icon"></span> <%- model.reblogged_from_name %></a><% if (typeof
+        model.reblogged_from_followed !== 'undefined' && model.reblogged_from_followed === false &&
+        model.reblogged_from_name !== currentUser.id) { %><a href="/follow/<%- model.reblogged_from_name %>"
+                                                             class="reblog_follow_button"
+                                                             data-tumblelog-name="<%- model.reblogged_from_name %>"
+                                                             title="Follow <%- model.reblogged_from_name %>"
+                                                             data-peepr='{"tumblelog":"<%- model.reblogged_from_name %>", "postId":"<%- model.reblogged_from_id %>"}'><span
+                class="follow-text">Follow</span></a><% } %><% } %>
+    </div>
+    <% if (projectx && model.classification && (model.classification === 'sensitive' || model.classification ===
+    'explicit' ) && !ownBlog && !shouldBypassSafeModeForPost && !shouldBypassTagFiltering){ %><% hasProjectXcover = true
+    %>
+    <div class="post_content clearfix">
+        <div class="post_content_inner safemode peepr"><p><span class="newcover message">Hey, this post may contain adult content, so we&#039;ve hidden it from public view.</span><br><a
+                class="newcover link" href="/policy/community" target="_blank">Learn more</a><br></p></div>
+    </div>
+    <% } else if (!projectx && safeMode && model.is_nsfw_based_on_score && !ownBlog && !shouldBypassSafeModeForPost &&
+    !shouldBypassTagFiltering) { %><% hasSafeModeCover = true %>
+    <div class="post_content clearfix">
+        <div class="post_content_inner safemode peepr">
+            <p><span class="message">This post may contain sensitive content.</span><br><% if (canModifySafeMode) { %><%
+                if (!projectx) { %><a class="link link-safemode-settings" href="/settings/account#safe_mode"
+                                      target="_blank">Safe Mode is on</a><br><% } %>
+                <button class="tx-button show-me">View post</button>
+                <% } else { %><a class="link" href="/docs/nsfw" target="_blank">Why am I seeing this?</a><br><% } %>
+            </p>
+        </div>
+    </div>
+    <% } else if (hasTagFiltering && !shouldBypassTagFiltering && !shouldBypassSafeModeForPost) { %><%
+    hasTagFilteringCover = true %>
+    <div class="post_content clearfix">
+        <div class="post_content_inner tagfiltering peepr">
+            <p><span class="message">This post contains filtered tags</span><br><a
+                    class="link-tagfiltering-settings link" href="/settings/account#tagfiltering" target="_blank"><%-
+                model.filtered.tags.map(function(tag) { return '#' + tag; }).join(', ') %></a><br>
+                <button class="tx-button show-me-tag">View post</button>
+            </p>
+        </div>
+    </div>
+    <% } else { %>
+    <div class="post_content"><% if (
+        flagFrontend &&
+        flagProjectXappeal &&
+        ownBlog &&
+        model['classification-status'] &&
+        model['classification-status'].status != _.find(appealState, { appeal: 'OWNER_APPEAL_NSFW_NONE' }).readable
+        ) {
+        var classification = model['classification-status'].classification;
+        var status = model['classification-status'].status;
+
+        var isAvailable = (status === _.find(appealState, { appeal: 'OWNER_APPEAL_NSFW_AVAILABLE_PRIORITIZE'
+        }).readable)
+        || (status === _.find(appealState, { appeal: 'OWNER_APPEAL_NSFW_AVAILABLE' }).readable);
+        var isReblog = !!model.reblogged_from_tumblr_url;
+
+        var className = '';
+        var message = isReblog && !isAvailable ?
+        __('This post was flagged because somewhere in your reblog there might be adult content.') :
+        __('It looks like your post might be in violation of our Community Guidelines and is now hidden.');
+
+        if (status === _.find(appealState, { appeal: 'OWNER_APPEAL_NSFW_IN_REVIEW' }).readable) {
+        className = ' in-review';
+        message = isReblog ? __('This reblog is in content appeal') : __('Your post is in content appeal');
+        }
+
+        if (status === _.find(appealState, { appeal: 'OWNER_APPEAL_NSFW_COMPLETE' }).readable) {
+        message = __('Based on our Community Guidelines this post contains adult content and is now only viewable to
+        you.');
+        }
+
+        // A negative margin is added to all banners to make them flush
+        // with the post body. For ask/answer type posts this negative margin
+        // needs to be removed.
+        if (model.type != 'photo' && model.type != 'video') {
+        className += ' remove-margin';
+        } %>
+        <div class="x-banner<%- className %>"><p class="message-status"><%- message %></p><% if (isAvailable) { %>
+            <button class="review appeal"><%- __('Appeal') %></button>
+            <% } else { %>
+            <button class="review question-mark"><span>?</span></button>
+            <% } %>
+        </div>
+        <% } %><%= model.post_html %>
+    </div>
+    <% } %><% if (!hasProjectXcover && !hasSafeModeCover && !hasTagFilteringCover) { %><% if
+    (!_.isUndefined(model.source_url) && _.isEmpty(model.source_url) && model.source_title) { %>
+    <div class="post-source-footer"><span class="post-source-name-prefix">Source: </span><span
+            class="post-source-link post_info_link"><%- model.source_title %></span></div>
+    <% } else if (typeof model.source_url !== 'undefined' && model.source_title) { %>
+    <div class="post-source-footer"><span class="post-source-name-prefix">Source: </span><a
+            class="post-source-link post_info_link" target="_blank" href="<%- model.source_url %>"
+            title="<%- model.source_title %>" rel="noopener" <% if (!model.has_custom_source_url) { %>
+        data-peepr='{"tumblelog":"<%- model.source_title %>", "postId":"<%- model.root_id %>"}'<% } %>><%-
+        model.source_title %></a></div>
+    <% } %><% if (!inlineTags) { %>
+    <div class="source-clear"></div>
+    <% } %><% if (typeof model.tags !== 'undefined' && model.tags.length > 0) { %>
+    <div class="post_tags<%- inlineTags ? ' nowrap' : ' fadeable fadeable-source' %>">
+        <div class="post_tags_inner"><% if (typeof model.tags !== 'undefined') { %><% _.each(model.tags, function(tag) {
+            %><a class="post_tag <%- addTagClass %>" data-tag="<%- tag %>"
+                 href="<%- Tumblr.Utils.PostTags.tag_url(tag) %>">#<%- tag %></a><% }); %><% } %>
+        </div>
+    </div>
+    <% } %>
+    <div class="post_footer"><% if (_.isObject(model.notes)) { %>
+        <div class="post_notes">
+            <div class="post_notes_label note_count <%- (model.notes.count <= 0) ? 'no_notes' : '' %>"><a
+                    class="note_link_current"
+                    title="<%- model.notes.current %>"
+                    data-less="<%- model.notes.less %>"
+                    data-more="<%- model.notes.more %>"
+                    data-count="<%- model.notes.count %>"
+            ><%- model.notes.current %></a>
+                <div class="notes_outer_container popover popover_gradient nipple_on_left" style="display: none;">
+                    <div class="notes_container popover_inner">
+                        <div class="popover_scroll">
+                            <ol class="notes"></ol>
+                            <div class="more_notes_link_container"><span class="notes_loading">Loading...</span><a
+                                    class="more_notes_link" style="display:none;" data-next="" rel="nofollow" href="#">Show
+                                more notes</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% } %>
+        <div class="post_controls"><% if (model.can_send_in_message) { %>
+            <div class="post_control post-control-icon share" data-subview="share" title="Share"
+                 data-tumblelog-uuid="<%- model.tumblelog_uuid %>" data-is-nsfw="<%- model.is_nsfw %>" data-post-id="<%-
+                         model.id %>" data-tumblelog-name="<%- model.tumblelog %>"
+                 data-parent-tumblelog-name="<%- _.get(model, 'reblogged_from_name') %>"></div>
+            <% } %><% if (model.can_reply) { %>
+            <div class="reply_container">
+                <div class="post_control post-control-icon reply"></div>
+            </div>
+            <% } %><% if (model.can_reblog) { %><a class="post_control post-control-icon reblog"
+                                                   href="/reblog/<%- model.id %>/<%- model.reblog_key %>"></a><% } %><%
+            if (model.can_like) { %>
+            <div class="post_control post-control-icon like <%- model.liked ? 'liked' : '' %>"></div>
+            <% } %>
+        </div>
+    </div>
+    <a class="post_permalink" href="<%- model.post_url %>" target="_blank"
+       title="View post -  <%- model.posted_on_tooltip %>" rel="noopener"></a><% } %>
+</div></script>
+<script id="indash_blog_post_show_more" type="text/template">
+    <div
+            class="show_more_posts_wrapper">
+        <button class="chrome big show_more_posts" type="button">More posts</button></div></script>
+<script id="peepr_error"
+        type="text/template"><% var errorText = ["This thing is busted. Try it again?","Something stinks. Try it again?","Urp. Something went sideways. Retry it?","Something is screwy. Try again?","A wrong thing is happening. Try again?","We give up. This isn\u0027t loading. Wanna try again?","I broke.","Something is wack.","Things fell apart. Try again?","Something broke. So sorry. Really sorry. Oh no. Try again?","Something went kablooie. Try again?","Well, this fizzled. But let\u2019s give it another shot.","Much time has passed.","Something went and got goofed.","Hmm. This doesn\u2019t seem to be working.","Something went wrong. I really tried. I\u2019d like to try again."] %>
+<div class="peepr_error">
+    <div class="peepr_error_text"><%= _.sample(errorText) %></div>
+    <button class="refresh chrome blue big">
+        Retry
+    </button>
+</div></script>
+<script id="follow_list_template" type="text/tmpl">
+    <li
+     class="section_header no_push"><%= heading %></li>
+</script>
+<script id="follow_list_item_template" type="text/tmpl"><a href="<%= url %>" class="follow_list_item_blog blog<%= (!following) ? ' has_follow_button' : '' %>" target="blank"><div class="hide_overflow <%= (!following) ? ' has_follow_button' : '' %>"><span class="tumblelog_title">             <%= name %><span><br /><small class="tumblelog_name"><%= title %></small></div><div class="avatar" style="background-image:url('<%= avatar_url %>');"><img src="<%= avatar_url %>" class="avatar_img" alt="" /></div></a><% if (!following) { %><a class="follow plus-follow-button" href="/follow/<%= name %>" data-tumblelog-name="<%= name %>" data-follow-source="<%= follow_source %>" title="Follow"><span class="icon_plus follow_icon"></span></a><% } %><% if (has_dismiss) { %><div class="dismiss"><i class="icon_close"></i></div><% } %>
+</script>
+<script id="follow_list_tag_editors_small_links_template" type="text/tmpl">
+    <div
+     class="small_links"><a href="#" class="show_more_contributors show_more"><div class="hide_overflow">See All</div><div class="gradient"></div></a><% if (user_is_editor) { %><a href="/docs/editor_guidelines">Editor guidelines</a><% } else { %><a href="/docs/featured_tags">Featured Tags FAQ</a><% } %></div>
+</script>
+<script id="follow_list_top_contributors_small_links_template" type="text/tmpl">
+    <div
+     class="small_links"><a href="#" class="show_more_contributors show_more"><div class="hide_overflow">See All</div></a></div>
+</script>
